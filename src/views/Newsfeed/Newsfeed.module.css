@@ -1,0 +1,44 @@
+.newsfeed {
+    padding:  40px 0;
+}
+.postTitle {
+    font-weight: 700;
+    font-size: 30px;
+    margin-bottom: 15px;
+}
+.postContainer {
+    width: 600px;
+}
+.avatar {
+    width: 65px;
+    height: 65px;
+    max-width: 100%;
+    object-fit: cover;
+    margin-right: 15px;
+    border-radius: 50%;
+}
+.flexable {
+    display: flex;
+    justify-content: space-between;
+}
+.post {
+    width: calc(100% - 80px);
+    border: 2px solid #dcdcdc;
+    padding: 10px;
+    background: #fff;
+}
+.createPost textarea {
+    width: 100%;
+    padding: 5px 10px;
+    border: none;
+    min-height: 30vh;
+    outline: none;
+    resize:none
+}
+.postAction {
+    display: flex;
+    justify-content: flex-end;
+    width: 100%;
+    border-top: 2px solid #dcdcdc;
+    padding-top: 10px;
+}

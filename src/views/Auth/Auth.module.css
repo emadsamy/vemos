@@ -1,0 +1,17 @@
+.authContainer {
+    padding: 50px 0;
+}
+h1 {
+    margin-bottom: 30px;
+}
+.authInput {
+    width: 400px;
+}
+.alertContainer {
+    width: 500px;
+    padding: 10px 0;
+}
+.authLink {
+    text-decoration: underline;
+    color: #666;
+}
