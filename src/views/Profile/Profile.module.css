@@ -1,0 +1,91 @@
+.profileFlexable {
+    display: flex;
+    justify-content: space-between;
+}
+.profileLeft {
+    width: 350px;
+}
+.profileRight {
+    width: calc(100% - 380px);
+}
+.profileLeft,
+.profileRight {
+    background: #fff;
+    padding: 30px;
+    border-radius: 12px;
+    border: 2px solid #eee
+}
+.profile {
+    padding-top: 80px;
+}
+.profileAvatar {
+    display: flex;
+    justify-content: center;
+    width: 100%;
+    padding: 30px 0 20px;
+}
+.profileAvatar img {
+    border: 2px solid #eee;
+    border-radius: 100%;
+    width: 120px;
+    height: 120px;
+}
+.tabBtn {
+    list-style: none;
+    padding: 10px 30px;
+    font-size: 18px ;
+    font-weight: 600;
+    cursor: pointer;
+}
+.tabList {
+    margin: 0 -30px;
+    padding: 0;
+}
+.activeTab {
+    background: #0d6efd;
+    color: #fff;
+}
+.userData {
+    margin-bottom: 30px;
+}
+.userData > div {
+    font-size: 18px;
+    font-weight: 600;
+}
+.formGroup {
+    margin-bottom: 17px;
+}
+.fgFlexable {
+    display: flex;
+    align-items: center;
+    margin-bottom: 7px;
+}
+.formTitle {
+    min-width: 100px;
+    font-size: 18px;
+    font-weight: 600;
+}
+.formInput {
+    padding: 8px 13px;
+    border: 1px solid #eee
+}
+.formInput:focus {
+    outline: none;
+    box-shadow: none;
+}
+.formInvalid {
+    border: 1px solid #f00
+}
+.modalContainer > div {
+    width: 570px;
+    max-width: 100%;
+}
+.stImg {
+    width: 80%;
+    margin: auto;
+    margin-bottom: 15px;
+}
+.stText {
+    font-size: 18px;
+    margin-bottom: 10px;
+}

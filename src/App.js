@@ -7,6 +7,7 @@ import { Login } from './views/Auth/Login';
 import { Register } from './views/Auth/Register';
 import { Newsfeed } from './views/Newsfeed/Newsfeed';
 import { Logout } from './views/Logout/Logout';
+import { Profile } from './views/Profile/Profile';
 import { NavbarComponent } from './components/Navbar/Navbar';
 import { GetJwt } from "./helpers/index";
 
@@ -20,6 +21,7 @@ function App() {
         <Route path="/register" element={<Register />} />
         <Route path="/logout" element={<Logout />} />
         <Route path="/newsfeed" element={<Newsfeed />} />
+        <Route path="/profile" element={<Profile />} />
         <Route path="*" element={<NotFound />} />
       </Routes>
     </div>

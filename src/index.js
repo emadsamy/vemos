@@ -8,6 +8,8 @@ import { reducer } from "./store/reducer";
 import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
+import { Toaster } from "react-hot-toast"
+// import "@styles/react/libs/react-hot-toasts/react-hot-toasts.scss"
 
 window.baseURL = 'http://127.0.0.1:8000/api/v1';
 
@@ -25,6 +27,10 @@ root.render(
   <Provider store={store}>
     <BrowserRouter>
       <Suspense fallback={'Loading...'}>
+        <Toaster
+          position={'top-right'}
+          toastOptions={{ className: "react-hot-toast" }}
+        />
         <App />
       </Suspense>
     </BrowserRouter>

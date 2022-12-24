@@ -20,17 +20,11 @@ const NavbarComponent = (props) => {
     const [userData, setUserData] = useState("");
     const rows = useSelector((state) => state.me);
 
-    // const { me } = useSelector((state) => ({
-    //         me: state.me,
-    //     }), shallowEqual
-    // );
-
-
     return (
         <div className={classes.navbarContainer}>
             <Navbar collapseOnSelect expand="lg" bg="dark" variant="dark">
                 <Container>
-                <NavLink to="/"><Navbar.Brand>React Social Media</Navbar.Brand></NavLink>
+                    <NavLink to="/"><Navbar.Brand>React Social Media</Navbar.Brand></NavLink>
                     {/* <Navbar.Toggle aria-controls="responsive-navbar-nav" /> */}
                     <Navbar.Collapse id="responsive-navbar-nav">
                         <Nav className="me-auto">
@@ -48,9 +42,11 @@ const NavbarComponent = (props) => {
                         </Nav>
                         <Nav>
                             {
-                                GetJwt() ? <div>
+                                GetJwt() ? <div className='d-flex align-items-center'>
+                                    <div className={classes.balance}>Balance {rows.balance}$</div>
                                     {/* <NavLink to="/newsfeed" className={classes.navLink}>Profile</NavLink> */}
                                     <NavDropdown className={`text-capitalize`} title={rows.name} id="collasible-nav-dropdown">
+                                        <div className={classes.dropdownLink}><NavLink to="/profile">Profile</NavLink></div>
                                         <div className={classes.dropdownLink}><NavLink to="/newsfeed">News Feed</NavLink></div>
                                         <div className={classes.dropdownLink}><NavLink to="/logout">Logout</NavLink></div>
                                     </NavDropdown>

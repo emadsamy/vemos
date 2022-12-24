@@ -1,44 +1,207 @@
 .newsfeed {
-    padding:  40px 0;
+  padding: 40px 0;
 }
 .postTitle {
-    font-weight: 700;
-    font-size: 30px;
-    margin-bottom: 15px;
+  font-weight: 700;
+  font-size: 26px;
+  margin-bottom: 25px;
 }
 .postContainer {
-    width: 600px;
+  width: 100%;
 }
 .avatar {
-    width: 65px;
-    height: 65px;
-    max-width: 100%;
-    object-fit: cover;
-    margin-right: 15px;
-    border-radius: 50%;
+  width: 65px;
+  height: 65px;
+  max-width: 100%;
+  object-fit: cover;
+  margin-right: 15px;
+  border-radius: 50%;
 }
 .flexable {
-    display: flex;
-    justify-content: space-between;
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
 }
 .post {
-    width: calc(100% - 80px);
-    border: 2px solid #dcdcdc;
-    padding: 10px;
-    background: #fff;
+  border: 2px solid #dcdcdc;
+  padding: 10px;
+  background: #fff;
+  width: calc(100% - 90px);
 }
 .createPost textarea {
-    width: 100%;
-    padding: 5px 10px;
-    border: none;
-    min-height: 30vh;
-    outline: none;
-    resize:none
+  width: 100%;
+  padding: 5px 10px;
+  border: none;
+  min-height: 30vh;
+  outline: none;
+  resize: none;
 }
 .postAction {
-    display: flex;
-    justify-content: flex-end;
-    width: 100%;
-    border-top: 2px solid #dcdcdc;
-    padding-top: 10px;
+  display: flex;
+  justify-content: flex-end;
+  width: 100%;
+  border-top: 2px solid #dcdcdc;
+  padding-top: 10px;
+}
+.postCol {
+  width: calc(100% - 440px);
+}
+.newsfeedFlex {
+  display: flex;
+  justify-content: space-between;
+}
+.followCol {
+  width: 400px;
+}
+.postsRows {
+  padding: 60px 0 40px 90px;
+}
+.postRow {
+  padding: 22px;
+  padding-bottom: 14px;
+  border-radius: 12px;
+  background: #fff;
+  box-shadow: 0px 2px 11px #5c5c5c14;
+  margin-bottom: 15px;
+}
+.postUser {
+  display: flex;
+  align-items: center;
+}
+.userImg {
+  width: 55px;
+  height: 55px;
+  border: 1px solid #ddd;
+  border-radius: 50%;
+  margin-right: 13px;
+  object-fit: cover;
+}
+.postName {
+  font-weight: 600;
+  word-break: break-all;
+  text-transform: capitalize;
+}
+.postDate {
+  font-size: 15px;
+  font-weight: 400;
+  color: #777;
+}
+.postDesc {
+  word-break: break-all;
+  margin-top: 13px;
+}
+.media {
+  max-width: 100%;
+}
+.postMedia {
+  margin-top: 15px;
+}
+.postMedia video {
+  max-width: 100%;
+}
+.postVideo,
+.postImg {
+  margin: 15px -22px;
+}
+.userPostImg {
+  width: 100%;
+  max-width: 100%;
+  max-height: 400px;
+  object-fit: cover;
+}
+.writeComment {
+  display: flex;
+}
+.rcAvatar .avatar {
+  width: 40px;
+  height: 40px;
+}
+.comments {
+  padding-top: 10px;
+  margin-top: 10px;
+  border-top: 1px solid #eee;
+}
+.rcAction {
+  width: 100%;
+  padding: 3px 10px;
+}
+.rcInput {
+  width: 100%;
+  padding: 8px;
+  border: none;
+  resize: none;
+  font-size: 15px;
+}
+.rcInput:focus {
+  border: none;
+  box-shadow: none;
+  outline: none;
+}
+.rcAction {
+  display: flex;
+}
+.rcActionBtn {
+  margin-left: 15px;
+}
+.rcActionBtn button {
+  border-radius: 50px;
+  background: none;
+  color: #0d6efd;
+  font-weight: 500;
+  border: none;
+}
+.rcActionBtn button:hover,
+.rcActionBtn button:active {
+  background: none !important;
+  color: #0d6efd !important;
+  border: none !important;
+  opacity: 0.7;
+}
+.rcActionBtn button:active {
+  opacity: 0.5;
+}
+.rcAction {
+  border: 1px solid #eee;
+  border-radius: 50px;
+  overflow: hidden;
+}
+.fetchComments {
+  padding-top: 15px;
+}
+.crImg {
+  width: 33px;
+  height: 33px;
+  object-fit: cover;
+  border-radius: 100%;
+  margin-right: 15px;
+}
+.commentRow {
+  display: flex;
+  margin-bottom: 15px;
+}
+.commentRow:last-of-type {
+  margin: 0;
+}
+.crText {
+  width: 100%;
+  background: #e7e7e791;
+  padding: 10px 15px;
+  border-radius: 12px;
+}
+.commenterName {
+  font-weight: 600;
+  text-transform: capitalize;
+  font-size: 15px;
+  /* text-decoration: underline; */
+}
+.spinnerPosts {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding-top: 30px;
+}
+.addCommentAction:focus,
+.addCommentAction:active {
+  background: none !important;
+  background-color: none !important;
 }
