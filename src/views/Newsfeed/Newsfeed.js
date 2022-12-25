@@ -148,12 +148,18 @@ const Newsfeed = (props) => {
     redirect = <Navigate to="/login" />;
   }
 
-  function staticComments(data, status) {
+  function addCommentsHandle(data, status) {
     if (status) {
       setComments((comments) => [{ ...data }, ...comments]);
     }
-    // posts[0].comments_posts.push({ data });
-    console.log(posts);
+    // For Update
+    // if (status) {
+    //   if (comments[1]) {
+    //     let newArr = [...comments];
+    //     newArr[1].comment = data.comment;
+    //     setComments(newArr);
+    //   }
+    // }
   }
 
   function deleteComment(index, status) {
@@ -284,7 +290,12 @@ const Newsfeed = (props) => {
                             <div className={classes.rcAvatar}>
                               <Avatar className={classes.avatar} />
                             </div>
-                            <AddComment staticComments={staticComments} userId={rows.id} postId={row.id} postIndex={index} />
+                            <AddComment
+                              addCommentsHandle={addCommentsHandle}
+                              userId={rows.id}
+                              postId={row.id}
+                              postIndex={index}
+                            />
                           </div>
 
                           {/* Fetch Comments */}

@@ -205,3 +205,6 @@
   background: none !important;
   background-color: none !important;
 }
+.postRow {
+  transition: all 0.5s ease-in-out;
+}

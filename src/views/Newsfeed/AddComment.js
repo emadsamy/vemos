@@ -9,7 +9,7 @@ import Button from "react-bootstrap/Button";
 import toast from "react-hot-toast";
 import { RotatingLines } from "react-loader-spinner";
 
-const AddComment = ({ userId, postId, postIndex, staticComments }) => {
+const AddComment = ({ userId, postId, postIndex, addCommentsHandle }) => {
   const [comment, setComment] = useState("");
   const [loading, setLoading] = useState(false);
 
@@ -28,7 +28,7 @@ const AddComment = ({ userId, postId, postIndex, staticComments }) => {
       .then((response) => {
         setLoading(false);
         console.log(response.data.data);
-        staticComments(response.data.data, response.data.success);
+        addCommentsHandle(response.data.data, response.data.success);
         if (response.data.success) {
           toast.success(response.data.message);
           setComment("");
