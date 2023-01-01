@@ -63,6 +63,7 @@
   background: #fff;
   box-shadow: 0px 2px 11px #5c5c5c14;
   margin-bottom: 15px;
+  position: relative;
 }
 .postUser {
   display: flex;
@@ -207,4 +208,41 @@
 }
 .postRow {
   transition: all 0.5s ease-in-out;
+}
+.commentToRead {
+  position: relative;
+}
+.editComment input {
+  width: 100%;
+  border: 1px solid #999;
+}
+.editComment {
+  width: 100%;
+}
+.postControl {
+  position: absolute;
+  right: 12px;
+  top: 12px;
+}
+.editPost {
+  display: block;
+  margin-top: 10px;
+  width: 100%;
+  border: 1px solid #999 !important;
+}
+.tracker {
+  width: 70px;
+  height: 70px;
+  background: #f00;
+  position: fixed;
+  left: auto;
+  right: auto;
+  z-index: 100;
+}
+.imgPlaceholder {
+  background: #f00;
+  width: 100%;
+}
+.imgPlaceholder img {
+  width: 100%;
 }

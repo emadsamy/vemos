@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useRef } from "react";
+import React, { useEffect, useState, useRef, Suspense } from "react";
 import { Route, Switch, NavLink, Navigate, useNavigate } from "react-router-dom";
 import axios from "axios";
 import classes from "./Newsfeed.module.css";
@@ -13,6 +13,7 @@ import AvatarPost from "../../assets/img/default.png";
 import moment from "moment";
 import { Comment } from "./Comment";
 import { AddComment } from "./AddComment";
+import { PostCard } from "./PostCard";
 import toast from "react-hot-toast";
 import { ColorRing } from "react-loader-spinner";
 
@@ -117,6 +118,19 @@ const Newsfeed = (props) => {
 
   useState(() => {
     getPosts();
+    // window.addEventListener("blur", () => {
+    //   document.title = "Come Back Bro :(";
+    // });
+    // window.addEventListener("focus", () => {
+    //   document.title = "Welcome :)";
+    // });
+
+    // document.body.addEventListener("mousemove", (e) => {
+    //   const tracker = document.getElementById("tracker");
+    //   tracker.style.left = `${e.clientX - 35}px`;
+    //   tracker.style.top = `${e.clientY - 35}px`;
+    // });
+    console.log(process.env.REACT_APP_TITLE);
   }, []);
 
   function getPosts() {
@@ -148,30 +162,54 @@ const Newsfeed = (props) => {
     redirect = <Navigate to="/login" />;
   }
 
+  // Add Comment
   function addCommentsHandle(data, status) {
     if (status) {
       setComments((comments) => [{ ...data }, ...comments]);
     }
-    // For Update
-    // if (status) {
-    //   if (comments[1]) {
-    //     let newArr = [...comments];
-    //     newArr[1].comment = data.comment;
-    //     setComments(newArr);
-    //   }
-    // }
   }
 
+  // Edit Comment
+  function editComment(index, data, status) {
+    if (status) {
+      if (comments[index]) {
+        let newArr = [...comments];
+        newArr[index].comment = data.comment;
+        setComments(newArr);
+      }
+    }
+  }
+
+  // Delete Comment
   function deleteComment(index, status) {
     if (status) {
       comments.splice(index, 1);
       setComments((comments) => [...comments]);
     }
-    console.log(index, status);
+  }
+
+  // Delete Post
+  function deletePost(index, status) {
+    if (status) {
+      posts.splice(index, 1);
+      setPosts((posts) => [...posts]);
+    }
+  }
+
+  // Edit Post
+  function editPost(index, data, status) {
+    if (status) {
+      if (posts[index]) {
+        let newArr = [...posts];
+        newArr[index].desc = data.desc;
+        setPosts(newArr);
+      }
+    }
   }
 
   return (
     <>
+      {/* <div id={"tracker"} className={classes.tracker}></div> */}
       {redirect}
       <NavbarComponent />
       <div className={classes.newsfeed}>
@@ -236,7 +274,22 @@ const Newsfeed = (props) => {
                   {posts.map((row, index) => {
                     return (
                       <div key={index} className={classes.postRow}>
-                        <div className={classes.postTop}>
+                        <PostCard
+                          id={row.id}
+                          index={index}
+                          avatar={row.post_user.avatar}
+                          name={row.post_user.name}
+                          email={row.post_user.email}
+                          createdAt={row.post_user.created_at}
+                          desc={row.desc}
+                          type={row.type}
+                          video={row.video}
+                          audio={row.audio}
+                          image={row.image}
+                          deletePost={deletePost}
+                          editPost={editPost}
+                        />
+                        {/* <div className={classes.postTop}>
                           <div className={classes.postUser}>
                             <img
                               src={row.post_user.avatar ? row.post_user.avatar : AvatarPost}
@@ -284,7 +337,7 @@ const Newsfeed = (props) => {
                               ""
                             )}
                           </div>
-                        </div>
+                        </div> */}
                         <div className={classes.comments}>
                           <div className={classes.writeComment}>
                             <div className={classes.rcAvatar}>
@@ -311,6 +364,7 @@ const Newsfeed = (props) => {
                                     email={comment.user.email ? comment.user.email : ""}
                                     date={comment.created_at ? comment.created_at : ""}
                                     deleteComment={deleteComment}
+                                    editComment={editComment}
                                   />
                                 ) : (
                                   ""
