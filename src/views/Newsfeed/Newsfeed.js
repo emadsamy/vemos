@@ -3,7 +3,7 @@ import { Route, Switch, NavLink, Navigate, useNavigate } from "react-router-dom"
 import axios from "axios";
 import classes from "./Newsfeed.module.css";
 import { NavbarComponent } from "../../components/Navbar/Navbar";
-import { GetJwt } from "../../helpers/index";
+import { GetJwt, Test } from "../../helpers/index";
 import { Avatar } from "../../components/Avatar/Avatar";
 import Button from "react-bootstrap/Button";
 import { useSelector, useDispatch, shallowEqual } from "react-redux";
@@ -207,6 +207,10 @@ const Newsfeed = (props) => {
     }
   }
 
+  useEffect(() => {
+    console.log(Test(10000));
+  }, [Test()]);
+
   return (
     <>
       {/* <div id={"tracker"} className={classes.tracker}></div> */}
@@ -289,55 +293,6 @@ const Newsfeed = (props) => {
                           deletePost={deletePost}
                           editPost={editPost}
                         />
-                        {/* <div className={classes.postTop}>
-                          <div className={classes.postUser}>
-                            <img
-                              src={row.post_user.avatar ? row.post_user.avatar : AvatarPost}
-                              className={classes.userImg}
-                              alt={"User Name"}
-                            />
-                            <div className={classes.nameDate}>
-                              <div className={classes.postName}>
-                                {row.post_user.name} <span>({row.post_user.email})</span>
-                              </div>
-                              <div className={classes.postDate}>{moment(row.created_at).calendar()}</div>
-                            </div>
-                          </div>
-                        </div>
-                        <div className={classes.postCenter}>
-                          {row.desc ? <div className={classes.postDesc}>{row.desc}</div> : ""}
-                        </div>
-                        <div className={classes.postBottom}>
-                          <div className={classes.media}>
-                            {row.type == "video" ? (
-                              <div className={`${classes.postVideo} ${classes.postMedia}`}>
-                                <video controls>
-                                  <source src={`${row.video}#t=0.4`} type="video/mp4"></source>
-                                </video>
-                              </div>
-                            ) : (
-                              ""
-                            )}
-
-                            {row.type == "audio" ? (
-                              <div className={`${classes.postAudio} ${classes.postMedia}`}>
-                                <audio controls>
-                                  <source src={row.audio} type="audio/mpeg" />
-                                </audio>
-                              </div>
-                            ) : (
-                              ""
-                            )}
-
-                            {row.type == "image" ? (
-                              <div className={`${classes.postImg} ${classes.postMedia}`}>
-                                <img src={row.image} className={classes.userPostImg} alt={"User Name"} />
-                              </div>
-                            ) : (
-                              ""
-                            )}
-                          </div>
-                        </div> */}
                         <div className={classes.comments}>
                           <div className={classes.writeComment}>
                             <div className={classes.rcAvatar}>
@@ -380,7 +335,7 @@ const Newsfeed = (props) => {
             </div>
 
             <div className={classes.followCol}>
-              <div className={classes.postTitle}>Follow System</div>
+              <div className={classes.postTitle}>Follow Unfollow System</div>
             </div>
           </div>
         </div>
