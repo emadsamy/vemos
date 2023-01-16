@@ -16,7 +16,7 @@ const AddComment = ({ userId, postId, postIndex, addCommentsHandle }) => {
   function addComment() {
     setLoading(true);
     const options = {
-      url: window.baseURL + "/add_comment",
+      url: process.env.BASE_API_URL + "/add_comment",
       method: "POST",
       data: {
         post_id: postId,

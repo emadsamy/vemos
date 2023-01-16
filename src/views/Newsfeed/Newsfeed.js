@@ -83,7 +83,7 @@ const Newsfeed = (props) => {
 
     if ((desc == "" && media != "") || (media == "" && desc != "") || (media != "" && desc != "")) {
       const options = {
-        url: window.baseURL + "/add_post",
+        url: process.env.BASE_API_URL + "/add_post",
         method: "POST",
         headers: { "Content-Type": "multipart/form-data" },
         data: {
@@ -137,7 +137,7 @@ const Newsfeed = (props) => {
     setPostsLoading(true);
     const token = localStorage.getItem("token");
     const options = {
-      url: window.baseURL + "/posts",
+      url: process.env.BASE_API_URL + "/posts",
       method: "GET",
       headers: {
         Authorization: "Bearer " + token,

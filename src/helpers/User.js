@@ -1,12 +1,12 @@
-import React, {useState} from "react";
+import React, { useState } from "react";
 import axios from "axios";
 
 export const User = () => {
   var userId = "";
-  
+
   const token = localStorage.getItem("token");
   const options = {
-    url: window.baseURL + "/me",
+    url: process.env.BASE_API_URL + "/me",
     method: "GET",
     headers: {
       Authorization: "Bearer " + token,
@@ -16,7 +16,7 @@ export const User = () => {
   axios(options)
     .then((res) => {
       console.log(res.data.data);
-      const data = res.data.data
+      const data = res.data.data;
       return data;
     })
     .catch((err) => {

@@ -19,7 +19,7 @@ const Comment = ({ id, index, comment, name, email, avatar, date, deleteComment,
   function deleteCommentHandle() {
     setLoadingDelete(true);
     const options = {
-      url: window.baseURL + "/delete_comment/" + id,
+      url: process.env.BASE_API_URL + "/delete_comment/" + id,
       method: "DELETE",
       data: {},
     };
@@ -42,7 +42,7 @@ const Comment = ({ id, index, comment, name, email, avatar, date, deleteComment,
   function editCommentHandle() {
     setLoadingEdit(true);
     const options = {
-      url: window.baseURL + "/edit_comment/" + id,
+      url: process.env.BASE_API_URL + "/edit_comment/" + id,
       method: "PUT",
       data: {
         comment: commentValue,

@@ -38,7 +38,7 @@ const PostCard = ({
   function deletePostHandle() {
     setLoadingDelete(true);
     const options = {
-      url: window.baseURL + "/delete_post/" + id,
+      url: process.env.BASE_API_URL + "/delete_post/" + id,
       method: "DELETE",
       data: {},
     };
@@ -61,7 +61,7 @@ const PostCard = ({
   function editPostHandle() {
     setLoadingEdit(true);
     const options = {
-      url: window.baseURL + "/edit_post/" + id,
+      url: process.env.BASE_API_URL + "/edit_post/" + id,
       method: "PUT",
       data: {
         desc: descriptionValue,
