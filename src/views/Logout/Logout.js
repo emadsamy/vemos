@@ -10,7 +10,7 @@ const Logout = () => {
   const logoutHandler = () => {
     const token = localStorage.getItem("token");
     const options = {
-      url: process.env.BASE_API_URL + "/logout",
+      url: window.baseURL + "/logout",
       method: "POST",
       headers: {
         Authorization: "Bearer " + token,

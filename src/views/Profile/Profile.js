@@ -15,10 +15,13 @@ import toast from "react-hot-toast";
 import { ColorRing } from "react-loader-spinner";
 import { Tab, Tabs, TabList, TabPanel } from "react-tabs";
 import Form from "react-bootstrap/Form";
+import InputGroup from "react-bootstrap/InputGroup";
 import Cleave from "cleave.js/react";
 import { useForm, Controller } from "react-hook-form";
 import { ErrorMessage } from "@hookform/error-message";
 import { SuccessTransfer } from "./SuccessTransfer";
+import { Information } from "./Information";
+import { Edit } from "react-feather";
 
 const Profile = ({}) => {
   const {
@@ -36,6 +39,7 @@ const Profile = ({}) => {
   const [loading, setLoading] = useState(false);
   const [formStatus, setFormStatus] = useState(false);
   const [successTransfer, setSuccessTransfer] = useState(false);
+  const [avatarUpdated, setAvatarUpdated] = useState("");
   const dispatch = useDispatch();
   useState(() => {
     if (GetJwt()) {
@@ -43,6 +47,7 @@ const Profile = ({}) => {
     }
   }, [dispatch]);
   const rows = useSelector((state) => state.me);
+  const [fullName, setFullName] = useState("");
 
   let redirect = "";
   if (!GetJwt()) {
@@ -72,9 +77,14 @@ const Profile = ({}) => {
   const onSubmit = (data) => {
     // setSuccessTransfer(true)
     setLoading(true);
+    const token = localStorage.getItem("token");
     const options = {
-      url: process.env.BASE_API_URL + "/transfer-money",
+      url: window.baseURL + "/transfer-money",
       method: "POST",
+      headers: {
+        Authorization: "Bearer " + token,
+        Accept: "application/json",
+      },
       data: {
         email: data.email,
         balance: price,
@@ -92,30 +102,78 @@ const Profile = ({}) => {
       });
   };
 
+  const updateData = (name, email) => {
+    setFullName(name);
+  };
+
+  const changeAvatar = (event) => {
+    event.preventDefault();
+    const formData = new FormData();
+    formData.append("file", event.target.files[0]);
+    const token = localStorage.getItem("token");
+    const options = {
+      url: window.baseURL + `/edit_user_avatar/${rows.id}`,
+      method: "POST",
+      headers: {
+        "Content-Type": "multipart/form-data",
+        Authorization: "Bearer " + token,
+        Accept: "application/json",
+      },
+      data: {
+        avatar: event.target.files[0],
+      },
+    };
+
+    axios(options)
+      .then((response) => {
+        setLoading(false);
+        if (response.data.success) {
+          toast.success(response.data.message);
+          setAvatarUpdated(response.data.data.avatar);
+        }
+      })
+      .catch((error) => {
+        setLoading(false);
+      });
+  };
+
   return (
     <>
       <SuccessTransfer show={successTransfer} onHide={() => setSuccessTransfer(false)} />
       {redirect}
-      <NavbarComponent />
+      <NavbarComponent avatarUpdated={avatarUpdated} fullName={fullName} />
       <div className={classes.profile}>
         <div className={`container`}>
+          <div className={classes.welcomeMsg}>
+            Welcome Back, <span className={`text-capitalize`}>{fullName ? fullName : rows.name} 🎉</span>
+          </div>
           <Tabs selectedTabClassName={classes.activeTab}>
             <div className={classes.profileFlexable}>
               <div className={classes.profileLeft}>
                 <div className={classes.profileAvatar}>
-                  <Avatar />
+                  <Avatar avatarUpdated={avatarUpdated} />
+                  <button disabled={loading} className={classes.changeAvatarBtn}>
+                    <Edit className={classes.avatarIcon} size={18} />
+                    <input onChange={changeAvatar} className={classes.changeAvatarInput} type="file" accept="image/*" />
+                  </button>
                 </div>
                 <div className={`${classes.userData} text-center`}>
-                  <div>Name: {rows.name}</div>
+                  <div>
+                    Name: <span className={`text-capitalize`}>{fullName ? fullName : rows.name}</span>
+                  </div>
                   <div>Balance: {rows.balance} $</div>
                 </div>
                 <TabList className={classes.tabList}>
+                  <Tab className={classes.tabBtn}>Profile Information</Tab>
                   <Tab className={classes.tabBtn}>Transfer Money</Tab>
                 </TabList>
               </div>
               <div className={classes.profileRight}>
                 <TabPanel>
-                  <h2 className={`mb-5`}>Transfer Money</h2>
+                  <Information updateData={updateData} />
+                </TabPanel>
+                <TabPanel>
+                  <h2 className={`mb-5`}>💸 Send Money</h2>
                   <form onSubmit={handleSubmit(onSubmit)}>
                     <div className={classes.formGroup}>
                       <div className={classes.fgFlexable}>

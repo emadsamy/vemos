@@ -6,18 +6,20 @@ import Container from "react-bootstrap/Container";
 import Nav from "react-bootstrap/Nav";
 import Navbar from "react-bootstrap/Navbar";
 import NavDropdown from "react-bootstrap/NavDropdown";
+import Dropdown from "react-bootstrap/Dropdown";
 import { GetJwt } from "../../helpers/index";
 import { useSelector, useDispatch, shallowEqual } from "react-redux";
 import * as actions from "../../store/index";
+import Logo from "../../assets/img/logo.png";
+import { Avatar } from "../../components/Avatar/Avatar";
 
-const NavbarComponent = (props) => {
+const NavbarComponent = ({ avatarUpdated, fullName }) => {
   const dispatch = useDispatch();
   useState(() => {
     if (GetJwt()) {
       dispatch(actions.me());
     }
   }, [dispatch]);
-  const [userData, setUserData] = useState("");
   const rows = useSelector((state) => state.me);
 
   return (
@@ -25,29 +27,25 @@ const NavbarComponent = (props) => {
       <Navbar collapseOnSelect expand="lg" bg="dark" variant="dark">
         <Container>
           <NavLink to="/">
-            <Navbar.Brand>React Social Media</Navbar.Brand>
+            <Navbar.Brand>
+              <img className={`img-fluid ${classes.logo}`} src={Logo} />
+            </Navbar.Brand>
           </NavLink>
           {/* <Navbar.Toggle aria-controls="responsive-navbar-nav" /> */}
           <Navbar.Collapse id="responsive-navbar-nav">
-            <Nav className="me-auto">
-              {/* <NavDropdown title="Dropdown" id="collasible-nav-dropdown">
-                            <NavDropdown.Item href="#action/3.1">Action</NavDropdown.Item>
-                            <NavDropdown.Item href="#action/3.2">
-                                Another action
-                            </NavDropdown.Item>
-                            <NavDropdown.Item href="#action/3.3">Something</NavDropdown.Item>
-                            <NavDropdown.Divider />
-                            <NavDropdown.Item href="#action/3.4">
-                                Separated link
-                            </NavDropdown.Item>
-                            </NavDropdown> */}
-            </Nav>
-            <Nav>
+            <Nav className="me-auto"></Nav>
+            <Dropdown>
               {GetJwt() ? (
                 <div className="d-flex align-items-center">
-                  <div className={classes.balance}>Balance {rows.balance}$</div>
+                  <div className={classes.balance}>
+                    Balance <span className={classes.balanceValue}>{rows.balance}$</span>
+                  </div>
                   {/* <NavLink to="/newsfeed" className={classes.navLink}>Profile</NavLink> */}
-                  <NavDropdown className={`text-capitalize`} title={rows.name} id="collasible-nav-dropdown">
+                  <Dropdown.Toggle className={classes.navDropdown} variant="Secondary" id="dropdown-basic">
+                    <Avatar avatarUpdated={avatarUpdated} className={classes.avatar} />
+                    <span className={`${classes.userName} text-capitalize`}>{fullName ? fullName : rows.name}</span>
+                  </Dropdown.Toggle>
+                  <Dropdown.Menu className={`text-capitalize`} id="collasible-nav-dropdown">
                     <div className={classes.dropdownLink}>
                       <NavLink to="/profile">Profile</NavLink>
                     </div>
@@ -57,7 +55,7 @@ const NavbarComponent = (props) => {
                     <div className={classes.dropdownLink}>
                       <NavLink to="/logout">Logout</NavLink>
                     </div>
-                  </NavDropdown>
+                  </Dropdown.Menu>
                 </div>
               ) : (
                 <div>
@@ -69,7 +67,7 @@ const NavbarComponent = (props) => {
                   </NavLink>
                 </div>
               )}
-            </Nav>
+            </Dropdown>
           </Navbar.Collapse>
         </Container>
       </Navbar>

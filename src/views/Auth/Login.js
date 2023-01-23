@@ -15,7 +15,7 @@ import * as yup from "yup";
 
 const schema = yup
   .object({
-    email: yup.string().email().min(6, "Too Many Characters").required("Email address is required"),
+    email: yup.string().email("Email must be a valid email").min(6, "Too Many Characters").required("Email address is required"),
     password: yup.string().min(6, "Too Many Characters").required("Password is required"),
   })
   .required();

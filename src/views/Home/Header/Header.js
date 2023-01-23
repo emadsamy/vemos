@@ -22,7 +22,7 @@ const Header = (props) => {
   // }, []);
 
   // const fetchProducts = () => {
-  //     axios.get(process.env.BASE_API_URL + "/products")
+  //     axios.get(window.baseURL + "/products")
   //     .then((res) => {
   //         // console.log(res.data.data);
   //         setProducts(res.data.data);

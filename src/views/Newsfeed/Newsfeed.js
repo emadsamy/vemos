@@ -3,7 +3,7 @@ import { Route, Switch, NavLink, Navigate, useNavigate } from "react-router-dom"
 import axios from "axios";
 import classes from "./Newsfeed.module.css";
 import { NavbarComponent } from "../../components/Navbar/Navbar";
-import { GetJwt, Test } from "../../helpers/index";
+import { GetJwt } from "../../helpers/index";
 import { Avatar } from "../../components/Avatar/Avatar";
 import Button from "react-bootstrap/Button";
 import { useSelector, useDispatch, shallowEqual } from "react-redux";
@@ -16,6 +16,7 @@ import { AddComment } from "./AddComment";
 import { PostCard } from "./PostCard";
 import toast from "react-hot-toast";
 import { ColorRing } from "react-loader-spinner";
+import TextareaAutosize from "react-textarea-autosize";
 
 const Newsfeed = (props) => {
   const [loading, setLoading] = useState(false);
@@ -81,11 +82,17 @@ const Newsfeed = (props) => {
     const formData = new FormData();
     formData.append("file", media);
 
+    const token = localStorage.getItem("token");
+
     if ((desc == "" && media != "") || (media == "" && desc != "") || (media != "" && desc != "")) {
       const options = {
-        url: process.env.BASE_API_URL + "/add_post",
+        url: window.baseURL + "/add_post",
         method: "POST",
-        headers: { "Content-Type": "multipart/form-data" },
+        headers: {
+          "Content-Type": "multipart/form-data",
+          Authorization: "Bearer " + token,
+          Accept: "application/json",
+        },
         data: {
           desc: desc,
           user_id: rows.id,
@@ -130,14 +137,14 @@ const Newsfeed = (props) => {
     //   tracker.style.left = `${e.clientX - 35}px`;
     //   tracker.style.top = `${e.clientY - 35}px`;
     // });
-    console.log(process.env.REACT_APP_TITLE);
+    // console.log(process.env.REACT_APP_TITLE);
   }, []);
 
   function getPosts() {
     setPostsLoading(true);
     const token = localStorage.getItem("token");
     const options = {
-      url: process.env.BASE_API_URL + "/posts",
+      url: window.baseURL + "/posts",
       method: "GET",
       headers: {
         Authorization: "Bearer " + token,
@@ -207,9 +214,12 @@ const Newsfeed = (props) => {
     }
   }
 
-  useEffect(() => {
-    console.log(Test(10000));
-  }, [Test()]);
+  // function clearConsole() {
+  //   if (window.console || window.console.firebug) {
+  //     console.clear();
+  //   }
+  // }
+  // clearConsole();
 
   return (
     <>
@@ -228,11 +238,19 @@ const Newsfeed = (props) => {
                   </div>
                   <div className={classes.post}>
                     <div className={classes.createPost}>
-                      <textarea
+                      <TextareaAutosize
+                        minRows={4}
+                        maxRows={9}
+                        className={classes.rcInput}
                         value={desc}
                         onChange={(e) => setDesc(e.target.value)}
-                        placeholder={`Write a post here ....`}
-                      ></textarea>
+                        placeholder={`What's on your mind ?`}
+                      />
+                      {/* <textarea
+                        value={desc}
+                        onChange={(e) => setDesc(e.target.value)}
+                        placeholder={`What's on your mind ?`}
+                      ></textarea> */}
                     </div>
                     <div className={classes.media}>
                       {allMedia.image ? <img src={allMedia.image} className={`img-fluid`} /> : ""}
@@ -250,11 +268,15 @@ const Newsfeed = (props) => {
                       ) : (
                         ""
                       )}
-                      <input ref={inputFileRef} onChange={postMediaHandler} type="file" />
+                      <div className={classes.uploadFile}>
+                        <input ref={inputFileRef} onChange={postMediaHandler} type="file" />
+                        <div className={classes.ufTitle}>Drag your file here</div>
+                        <span className={classes.ufTypes}>Image - Video - Audio</span>
+                      </div>
                     </div>
                     <div className={classes.postAction}>
                       <Button disabled={loading} onClick={addPostHandler} variant="primary" type="button">
-                        {loading ? "Loading..." : "Post"}
+                        {loading ? "Loading..." : "Add Post"}
                       </Button>
                     </div>
                   </div>
@@ -277,7 +299,7 @@ const Newsfeed = (props) => {
                 <div className={classes.postsRows}>
                   {posts.map((row, index) => {
                     return (
-                      <div key={index} className={classes.postRow}>
+                      <div className={classes.postRow}>
                         <PostCard
                           id={row.id}
                           index={index}
@@ -311,6 +333,7 @@ const Newsfeed = (props) => {
                             ? comments.map((comment, comment_Index) => {
                                 return row.id === comment.post_id ? (
                                   <Comment
+                                    // key={comment.post_id}
                                     id={comment.id}
                                     index={comment_Index}
                                     comment={comment.comment}
@@ -335,7 +358,7 @@ const Newsfeed = (props) => {
             </div>
 
             <div className={classes.followCol}>
-              <div className={classes.postTitle}>Follow Unfollow System</div>
+              <div className={classes.postTitle}>People you may know</div>
             </div>
           </div>
         </div>

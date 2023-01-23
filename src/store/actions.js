@@ -61,6 +61,7 @@ export const login = (email, password) => {
     const options = {
       url: window.baseURL + "/login",
       method: "POST",
+      headers: { Accept: "application/json" },
       data: {
         email: email,
         password: password,

@@ -12,6 +12,7 @@ import toast from "react-hot-toast";
 import TextareaAutosize from "react-textarea-autosize";
 import { LazyLoadImage, trackWindowScroll } from "react-lazy-load-image-component";
 import "react-lazy-load-image-component/src/effects/blur.css";
+import PropTypes from "prop-types";
 
 const PostCard = ({
   id,
@@ -37,9 +38,14 @@ const PostCard = ({
   // Delete Comment
   function deletePostHandle() {
     setLoadingDelete(true);
+    const token = localStorage.getItem("token");
     const options = {
-      url: process.env.BASE_API_URL + "/delete_post/" + id,
+      url: window.baseURL + "/delete_post/" + id,
       method: "DELETE",
+      headers: {
+        Authorization: "Bearer " + token,
+        Accept: "application/json",
+      },
       data: {},
     };
     axios(options)
@@ -60,9 +66,14 @@ const PostCard = ({
   // Edit Comment
   function editPostHandle() {
     setLoadingEdit(true);
+    const token = localStorage.getItem("token");
     const options = {
-      url: process.env.BASE_API_URL + "/edit_post/" + id,
+      url: window.baseURL + "/edit_post/" + id,
       method: "PUT",
+      headers: {
+        Authorization: "Bearer " + token,
+        Accept: "application/json",
+      },
       data: {
         desc: descriptionValue,
         id: id,
@@ -125,7 +136,7 @@ const PostCard = ({
               disabled={loadingEdit}
               //   onKeyDown={onEnterKey}
             />
-            <div className="text-end text-right mt-2">
+            <div className={`${classes.postAction} text-end text-right mt-2`}>
               <Button disabled={loadingEdit} onClick={cancelInputEditHandler} variant="secondary">
                 {loadingEdit ? "Loading..." : "Cancel"}
               </Button>
@@ -167,7 +178,6 @@ const PostCard = ({
               <LazyLoadImage
                 effect="blur"
                 scrollPosition={scrollPosition}
-                PlaceholderSrc={AvatarPost}
                 src={image}
                 className={classes.userPostImg}
                 alt={"User Name"}
@@ -182,7 +192,7 @@ const PostCard = ({
 
       <div className={classes.postControl}>
         <Dropdown>
-          <Dropdown.Toggle disabled={loadingEdit || loadingDelete} variant="Secondary" id="dropdown-basic">
+          <Dropdown.Toggle disabled={loadingEdit || loadingDelete} variant="Secondary">
             <img className={`img-fluid`} src={More} style={{ width: "27px" }} />
           </Dropdown.Toggle>
 
@@ -197,3 +207,20 @@ const PostCard = ({
 };
 
 export { PostCard };
+
+PostCard.propTypes = {
+  id: PropTypes.number,
+  index: PropTypes.number,
+  avatar: PropTypes.string,
+  name: PropTypes.string,
+  email: PropTypes.string,
+  createdAt: PropTypes.string,
+  desc: PropTypes.string,
+  type: PropTypes.string,
+  video: PropTypes.string,
+  audio: PropTypes.string,
+  image: PropTypes.string,
+  deletePost: PropTypes.func,
+  editPost: PropTypes.func,
+  scrollPosition: PropTypes.string,
+};

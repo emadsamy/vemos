@@ -13,9 +13,11 @@
     "bootstrap": "^5.2.2",
     "cleave.js": "^1.6.0",
     "moment": "^2.29.4",
+    "prop-types": "^15.8.1",
     "react": "^18.2.0",
     "react-bootstrap": "^2.5.0",
     "react-dom": "^18.2.0",
+    "react-feather": "^2.0.10",
     "react-hook-form": "^7.39.7",
     "react-hot-toast": "^2.4.0",
     "react-lazy-load": "^4.0.1",
@@ -62,6 +64,7 @@
   },
   "devDependencies": {
     "@craco/craco": "^7.0.0",
+    "@types/react-lazy-load-image-component": "^1.5.2",
     "dotenv": "^16.0.3"
   }
 }

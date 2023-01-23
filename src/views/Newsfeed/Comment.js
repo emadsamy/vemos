@@ -8,6 +8,7 @@ import More from "../../assets/img/more.svg";
 import Button from "react-bootstrap/Button";
 import Dropdown from "react-bootstrap/Dropdown";
 import toast from "react-hot-toast";
+import PropTypes from "prop-types";
 
 const Comment = ({ id, index, comment, name, email, avatar, date, deleteComment, editComment }) => {
   const [loadingDelete, setLoadingDelete] = useState(false);
@@ -18,9 +19,14 @@ const Comment = ({ id, index, comment, name, email, avatar, date, deleteComment,
   // Delete Comment
   function deleteCommentHandle() {
     setLoadingDelete(true);
+    const token = localStorage.getItem("token");
     const options = {
-      url: process.env.BASE_API_URL + "/delete_comment/" + id,
+      url: window.baseURL + "/delete_comment/" + id,
       method: "DELETE",
+      headers: {
+        Authorization: "Bearer " + token,
+        Accept: "application/json",
+      },
       data: {},
     };
     axios(options)
@@ -41,9 +47,14 @@ const Comment = ({ id, index, comment, name, email, avatar, date, deleteComment,
   // Edit Comment
   function editCommentHandle() {
     setLoadingEdit(true);
+    const token = localStorage.getItem("token");
     const options = {
-      url: process.env.BASE_API_URL + "/edit_comment/" + id,
+      url: window.baseURL + "/edit_comment/" + id,
       method: "PUT",
+      headers: {
+        Authorization: "Bearer " + token,
+        Accept: "application/json",
+      },
       data: {
         comment: commentValue,
         id: id,
@@ -88,8 +99,12 @@ const Comment = ({ id, index, comment, name, email, avatar, date, deleteComment,
           <div className={classes.commentToRead}>
             {toggleInputEdit ? (
               <div className={classes.editComment}>
-                <input onChange={(e) => setCommentValue(e.target.value)} value={commentValue} placeholder="Write a Comment..." />
-                <div className="text-end text-right mt-2">
+                <textarea
+                  onChange={(e) => setCommentValue(e.target.value)}
+                  value={commentValue}
+                  placeholder="Write a Comment..."
+                />
+                <div className={`${classes.postAction} text-end text-right mt-2`}>
                   <Button disabled={loadingEdit} onClick={cancelInputEditHandler} variant="secondary">
                     {loadingEdit ? "Loading..." : "Cancel"}
                   </Button>
@@ -121,3 +136,15 @@ const Comment = ({ id, index, comment, name, email, avatar, date, deleteComment,
 };
 
 export { Comment };
+
+Comment.propTypes = {
+  id: PropTypes.number.isRequired,
+  index: PropTypes.number.isRequired,
+  comment: PropTypes.string.isRequired,
+  name: PropTypes.string.isRequired,
+  email: PropTypes.string.isRequired,
+  avatar: PropTypes.string.isRequired,
+  date: PropTypes.string.isRequired,
+  deleteComment: PropTypes.func,
+  editComment: PropTypes.func,
+};

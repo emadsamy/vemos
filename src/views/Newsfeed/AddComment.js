@@ -8,6 +8,7 @@ import TextareaAutosize from "react-textarea-autosize";
 import Button from "react-bootstrap/Button";
 import toast from "react-hot-toast";
 import { RotatingLines } from "react-loader-spinner";
+import PropTypes from "prop-types";
 
 const AddComment = ({ userId, postId, postIndex, addCommentsHandle }) => {
   const [comment, setComment] = useState("");
@@ -15,9 +16,15 @@ const AddComment = ({ userId, postId, postIndex, addCommentsHandle }) => {
 
   function addComment() {
     setLoading(true);
+    const token = localStorage.getItem("token");
     const options = {
-      url: process.env.BASE_API_URL + "/add_comment",
+      url: window.baseURL + "/add_comment",
       method: "POST",
+      headers: {
+        "Content-Type": "multipart/form-data",
+        Authorization: "Bearer " + token,
+        Accept: "application/json",
+      },
       data: {
         post_id: postId,
         user_id: userId,
@@ -60,7 +67,7 @@ const AddComment = ({ userId, postId, postIndex, addCommentsHandle }) => {
         disabled={loading}
       />
       <div className={classes.rcActionBtn}>
-        <Button className={classes.addCommentAction} disabled={loading} onClick={addComment} variant="primary" type="button">
+        <Button className={classes.addCommentAction} disabled={loading} onClick={addComment} type="button">
           {loading ? (
             <RotatingLines strokeColor="#666" strokeWidth="5" animationDuration="0.75" width="20" visible={true} />
           ) : (
@@ -73,3 +80,10 @@ const AddComment = ({ userId, postId, postIndex, addCommentsHandle }) => {
 };
 
 export { AddComment };
+
+AddComment.propTypes = {
+  userId: PropTypes.number.isRequired,
+  postId: PropTypes.number.isRequired,
+  postIndex: PropTypes.number,
+  addCommentsHandle: PropTypes.func,
+};

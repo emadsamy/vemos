@@ -6,7 +6,7 @@ export const User = () => {
 
   const token = localStorage.getItem("token");
   const options = {
-    url: process.env.BASE_API_URL + "/me",
+    url: window.baseURL + "/me",
     method: "GET",
     headers: {
       Authorization: "Bearer " + token,

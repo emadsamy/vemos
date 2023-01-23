@@ -15,14 +15,23 @@ import * as yup from "yup";
 
 const schema = yup
   .object({
-    fullname: yup.string().min(2, "Too Many Characters").required("Full Name is required"),
-    email: yup.string().email().min(6, "Too Many Characters").required("Email address is required"),
-    password: yup.string().min(6, "Too Many Characters").required("Password is required"),
+    fullname: yup.string().min(2, "Too many characters").required("Full Name is required"),
+    email: yup.string().email("Email must be a valid email").min(6, "Too many characters").required("Email address is required"),
+    password: yup
+      .string()
+      .min(6, "Too Many Characters")
+      .required("Password is required")
+      .matches(RegExp("(.*[a-z].*)"), "1 Lowercase letter")
+      .matches(RegExp("(.*[A-Z].*)"), "1 Uppercase letter")
+      .matches(RegExp("(.*\\d.*)"), "1 Number"),
     confirmPassword: yup
       .string()
       .min(6, "Too Many Characters")
       .required("Confirm Password is required")
-      .oneOf([yup.ref("password")], "Passwords does not match"),
+      .oneOf([yup.ref("password")], "Passwords does not match")
+      .matches(RegExp("(.*[a-z].*)"), "1 Lowercase letter")
+      .matches(RegExp("(.*[A-Z].*)"), "1 Uppercase letter")
+      .matches(RegExp("(.*\\d.*)"), "1 Number"),
   })
   .required();
 
