@@ -119,8 +119,8 @@
   height: 40px;
 }
 .comments {
-  padding-top: 10px;
-  margin-top: 10px;
+  padding-top: 5px;
+  margin-top: 5px;
   border-top: 1px solid #eee;
 }
 .rcAction {
@@ -169,6 +169,7 @@
 }
 .fetchComments {
   padding-top: 15px;
+  margin-left: 51px;
 }
 .crImg {
   width: 33px;
@@ -280,4 +281,68 @@
   display: none !important;
   content: none !important;
   border: none !important;
+}
+.postEvents {
+  margin: 7px -22px 0;
+  padding: 6px 22px 2px;
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  grid-gap: 12.52rem;
+  gap: 10px;
+  width: calc(100% + 44px);
+  border-top: 1px solid #e9e9e9;
+}
+.postEvents button {
+  width: 100%;
+  color: #65676b;
+  font-weight: 500;
+  background: #fff;
+  border: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 16px;
+  background: #eeeeeeb8;
+  padding: 7px;
+  border-radius: 6px;
+}
+.eventIcon {
+  margin-right: 5px;
+}
+.postEvents button:hover {
+  background: #e1dede;
+}
+.postEvents button:active {
+  transform: scale(0.9);
+}
+.commentDate {
+  font-weight: 500;
+  color: #666;
+  font-size: 13px;
+}
+.postEvents button:disabled {
+  background: #ddd;
+  cursor: not-allowed;
+}
+.postEvents button:disabled:hover,
+.postEvents button:disabled:active {
+  transform: scale(1);
+}
+.eventsCounter {
+  margin-top: 8px;
+}
+.likeCounter {
+  color: #999;
+  font-size: 17px;
+  font-weight: 500;
+  display: flex;
+  align-items: center;
+}
+.likeCountIcon {
+  width: 24px;
+  margin-right: 7px;
+}
+.liked {
+  background: #0d6efd !important;
+  color: #fff !important;
 }

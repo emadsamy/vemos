@@ -14,6 +14,7 @@ import moment from "moment";
 import { Comment } from "./Comment";
 import { AddComment } from "./AddComment";
 import { PostCard } from "./PostCard";
+import { Persons } from "./Persons";
 import toast from "react-hot-toast";
 import { ColorRing } from "react-loader-spinner";
 import TextareaAutosize from "react-textarea-autosize";
@@ -303,6 +304,7 @@ const Newsfeed = (props) => {
                         <PostCard
                           id={row.id}
                           index={index}
+                          userId={row.post_user.id}
                           avatar={row.post_user.avatar}
                           name={row.post_user.name}
                           email={row.post_user.email}
@@ -340,7 +342,7 @@ const Newsfeed = (props) => {
                                     avatar={comment.user.avatar ? comment.user.avatar : AvatarPost}
                                     name={comment.user.name ? comment.user.name : ""}
                                     email={comment.user.email ? comment.user.email : ""}
-                                    date={comment.created_at ? comment.created_at : ""}
+                                    createdAt={comment.created_at ? comment.created_at : ""}
                                     deleteComment={deleteComment}
                                     editComment={editComment}
                                   />
@@ -359,6 +361,7 @@ const Newsfeed = (props) => {
 
             <div className={classes.followCol}>
               <div className={classes.postTitle}>People you may know</div>
+              <Persons />
             </div>
           </div>
         </div>

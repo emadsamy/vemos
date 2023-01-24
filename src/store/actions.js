@@ -120,3 +120,31 @@ export const me = () => {
       });
   };
 };
+
+export const personsAction = (persons) => {
+  return {
+    type: actionType.PERSONS,
+    persons: persons,
+  };
+};
+
+export const persons = (id) => {
+  return (dispatch) => {
+    const token = localStorage.getItem("token");
+    const options = {
+      url: window.baseURL + "/get_persons/" + id,
+      method: "GET",
+      headers: {
+        Authorization: "Bearer " + token,
+        Accept: "application/json",
+      },
+    };
+    axios(options)
+      .then((response) => {
+        dispatch(personsAction(response.data));
+      })
+      .catch((err) => {
+        // dispatch(personsAction());
+      });
+  };
+};

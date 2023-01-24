@@ -1,0 +1,64 @@
+.personRow {
+  box-shadow: rgba(0, 0, 0, 0.05) 0px 0px 0px 1px;
+  border-radius: 6px;
+  overflow: hidden;
+  display: flex;
+  margin-bottom: 20px;
+}
+.personRow:last-of-type {
+  margin-bottom: 0;
+}
+.personimg {
+  width: 120px;
+  height: 120px;
+  object-fit: cover;
+  box-shadow: rgba(17, 17, 26, 0.05) 0px 1px 0px, rgba(17, 17, 26, 0.1) 0px 0px 8px;
+}
+.personDetails {
+  width: calc(100% - 140px);
+  padding: 10px 19px;
+}
+.personName {
+  font-size: 18px;
+  font-weight: 600;
+}
+.personFollowers {
+  font-size: 15px;
+  color: #999;
+  font-weight: 500;
+  margin-bottom: 10px;
+}
+.followBtn {
+  border: none;
+  background: #0d6efd;
+  color: #fff;
+  width: 100%;
+  padding: 7px;
+  border-radius: 6px;
+  font-size: 15px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 500;
+  box-shadow: rgba(0, 0, 0, 0.15) 0px 3px 3px 0px;
+}
+.followIcon {
+  margin-right: 6px;
+}
+.followBtn:hover {
+  box-shadow: none;
+  background: #0457d2;
+}
+.followBtn:active {
+  transform: scale(0.93);
+}
+.followBtn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+.followBtn:disabled:hover {
+  background: #0457d2;
+}
+.followBtn:disabled:active {
+  transform: scale(1);
+}

@@ -1,4 +1,4 @@
 import { GetJwt } from "./GetJwt";
 import { User } from "./User";
-import { Test } from "./Test";
-export { GetJwt, User, Test };
+import { getPostLikes } from "./getPostLikes";
+export { GetJwt, User, getPostLikes };

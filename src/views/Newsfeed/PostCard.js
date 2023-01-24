@@ -5,6 +5,7 @@ import classes from "./Newsfeed.module.css";
 import moment from "moment";
 import { Avatar } from "../../components/Avatar/Avatar";
 import AvatarPost from "../../assets/img/default.png";
+import LikeImg from "../../assets/img/like.svg";
 import More from "../../assets/img/more.svg";
 import Button from "react-bootstrap/Button";
 import Dropdown from "react-bootstrap/Dropdown";
@@ -13,10 +14,12 @@ import TextareaAutosize from "react-textarea-autosize";
 import { LazyLoadImage, trackWindowScroll } from "react-lazy-load-image-component";
 import "react-lazy-load-image-component/src/effects/blur.css";
 import PropTypes from "prop-types";
+import { MoreHorizontal, ThumbsUp, MessageCircle, Share } from "react-feather";
 
 const PostCard = ({
   id,
   index,
+  userId,
   avatar,
   name,
   email,
@@ -34,6 +37,8 @@ const PostCard = ({
   const [loadingEdit, setLoadingEdit] = useState(false);
   const [toggleInputEdit, setToggleInputEdit] = useState(false);
   const [descriptionValue, setDescriptionValue] = useState(desc);
+  const [likesCounter, setLikesCounter] = useState(0);
+  const [isLiked, setIsLiked] = useState(false);
 
   // Delete Comment
   function deletePostHandle() {
@@ -100,6 +105,65 @@ const PostCard = ({
       });
   }
 
+  // Get Likes
+  async function getLikes() {
+    const token = localStorage.getItem("token");
+    const options = {
+      url: window.baseURL + "/get_likes/" + id,
+      method: "POST",
+      headers: {
+        Authorization: "Bearer " + token,
+        Accept: "application/json",
+      },
+      data: {
+        user_id: userId,
+        post_id: id,
+      },
+    };
+    await axios(options)
+      .then((response) => {
+        // if (response.data.is_liked > 0) {
+        //   setIsLiked(true);
+        // } else {
+        //   setIsLiked(false);
+        // }
+        console.log(response);
+        setLikesCounter(response.data.count);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  }
+
+  // Add Like
+  function toggleLike() {
+    if (isLiked) {
+      setLikesCounter(likesCounter - 1);
+      setIsLiked(false);
+    } else {
+      setIsLiked(true);
+      setLikesCounter(likesCounter + 1);
+    }
+    const token = localStorage.getItem("token");
+    const options = {
+      url: window.baseURL + "/toggle_like",
+      method: "POST",
+      headers: {
+        Authorization: "Bearer " + token,
+        Accept: "application/json",
+      },
+      data: {
+        user_id: userId,
+        post_id: id,
+      },
+    };
+    axios(options)
+      .then((response) => {})
+      .catch((error) => {
+        console.log(error);
+      });
+  }
+
   const setInputEditHandler = () => {
     setToggleInputEdit(true);
     setDescriptionValue(desc);
@@ -110,15 +174,17 @@ const PostCard = ({
     setDescriptionValue(desc);
   };
 
+  useEffect(() => {
+    getLikes();
+  }, [id]);
+
   return (
     <>
       <div className={classes.postTop}>
         <div className={classes.postUser}>
           <img src={avatar ? avatar : AvatarPost} className={classes.userImg} alt={"User Name"} />
           <div className={classes.nameDate}>
-            <div className={classes.postName}>
-              {name} <span>({email})</span>
-            </div>
+            <div className={classes.postName}>{name}</div>
             <div className={classes.postDate}>{moment(createdAt).calendar()}</div>
           </div>
         </div>
@@ -188,12 +254,30 @@ const PostCard = ({
             ""
           )}
         </div>
+
+        <div className={classes.eventsCounter}>
+          <div className={classes.likeCounter}>
+            <img className={`img-fluid ${classes.likeCountIcon}`} src={LikeImg} alt="like" /> {likesCounter}
+          </div>
+        </div>
+
+        <div className={classes.postEvents}>
+          <button className={isLiked ? classes.liked : ""} onClick={toggleLike}>
+            <ThumbsUp size={21} className={classes.eventIcon} /> {isLiked ? "Liked" : "Like"}
+          </button>
+          <button disabled={true}>
+            <MessageCircle size={21} className={classes.eventIcon} /> Comment
+          </button>
+          <button disabled={true}>
+            <Share size={21} className={classes.eventIcon} /> Share
+          </button>
+        </div>
       </div>
 
       <div className={classes.postControl}>
         <Dropdown>
           <Dropdown.Toggle disabled={loadingEdit || loadingDelete} variant="Secondary">
-            <img className={`img-fluid`} src={More} style={{ width: "27px" }} />
+            <MoreHorizontal size={22} />
           </Dropdown.Toggle>
 
           <Dropdown.Menu>
@@ -211,6 +295,7 @@ export { PostCard };
 PostCard.propTypes = {
   id: PropTypes.number,
   index: PropTypes.number,
+  userId: PropTypes.number,
   avatar: PropTypes.string,
   name: PropTypes.string,
   email: PropTypes.string,

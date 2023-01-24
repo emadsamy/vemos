@@ -1,1 +1,1 @@
-export { loading, register, login, me } from './actions';
+export { loading, register, login, me, persons } from "./actions";

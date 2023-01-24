@@ -6,6 +6,8 @@ const initalState = {
   authErrors: [],
   loading: "",
   me: {},
+  persons: {},
+  personsLoading: true,
 };
 
 const reducer = (state = initalState, action) => {
@@ -34,6 +36,13 @@ const reducer = (state = initalState, action) => {
       return {
         ...state,
         me: action.me,
+      };
+
+    case actionType.PERSONS:
+      return {
+        ...state,
+        // personsLoading: action.personsLoading,
+        persons: action.persons,
       };
 
     default:

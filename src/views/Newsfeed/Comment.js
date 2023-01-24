@@ -9,8 +9,9 @@ import Button from "react-bootstrap/Button";
 import Dropdown from "react-bootstrap/Dropdown";
 import toast from "react-hot-toast";
 import PropTypes from "prop-types";
+import { MoreHorizontal } from "react-feather";
 
-const Comment = ({ id, index, comment, name, email, avatar, date, deleteComment, editComment }) => {
+const Comment = ({ id, index, comment, name, email, avatar, createdAt, deleteComment, editComment }) => {
   const [loadingDelete, setLoadingDelete] = useState(false);
   const [loadingEdit, setLoadingEdit] = useState(false);
   const [toggleInputEdit, setToggleInputEdit] = useState(false);
@@ -94,7 +95,7 @@ const Comment = ({ id, index, comment, name, email, avatar, date, deleteComment,
         </div>
         <div className={classes.crText}>
           <div className={classes.commenterName}>
-            {name} <span>({email})</span>
+            {name} - <span className={classes.commentDate}>{moment(createdAt).calendar()}</span>
           </div>
           <div className={classes.commentToRead}>
             {toggleInputEdit ? (
@@ -121,7 +122,7 @@ const Comment = ({ id, index, comment, name, email, avatar, date, deleteComment,
         <div className={classes.userControl}>
           <Dropdown>
             <Dropdown.Toggle disabled={loadingEdit || loadingDelete} variant="Secondary" id="dropdown-basic">
-              <img className={`img-fluid`} src={More} style={{ width: "27px" }} />
+              <MoreHorizontal size={22} />
             </Dropdown.Toggle>
 
             <Dropdown.Menu>
@@ -144,7 +145,7 @@ Comment.propTypes = {
   name: PropTypes.string.isRequired,
   email: PropTypes.string.isRequired,
   avatar: PropTypes.string.isRequired,
-  date: PropTypes.string.isRequired,
+  createdAt: PropTypes.string.isRequired,
   deleteComment: PropTypes.func,
   editComment: PropTypes.func,
 };
