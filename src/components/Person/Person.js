@@ -5,8 +5,9 @@ import classes from "./Person.module.css";
 import { Plus } from "react-feather";
 import AvatarPost from "../../assets/img/default.png";
 import PropTypes from "prop-types";
+import toast from "react-hot-toast";
 
-const Person = ({ id, userId, index, name, email, avatar, deletePerson }) => {
+const Person = ({ id, userId, index, name, email, avatar, deletePerson, className }) => {
   const [loading, setLoading] = useState(false);
   const followUser = () => {
     setLoading(true);
@@ -28,6 +29,7 @@ const Person = ({ id, userId, index, name, email, avatar, deletePerson }) => {
         setLoading(false);
         if (res.data.success) {
           deletePerson(index, res.data.success);
+          toast.success(`You followed ${name}`);
         }
       })
       .catch((err) => {
@@ -37,11 +39,11 @@ const Person = ({ id, userId, index, name, email, avatar, deletePerson }) => {
 
   return (
     <>
-      <div className={classes.personRow}>
+      <div className={`${className} ${classes.personRow}`}>
         <img className={`img-fluid ${classes.personimg}`} src={avatar ? avatar : AvatarPost} alt="username" />
         <div className={classes.personDetails}>
           <div className={`${classes.personName} text-capitalize`}>{name}</div>
-          <div className={classes.personFollowers}>0 Follwers</div>
+          <div className={classes.personFollowers}></div>
           <button onClick={followUser} disabled={loading} className={classes.followBtn}>
             {loading ? "" : <Plus className={classes.followIcon} size={20} />} {loading ? "Loading..." : "Follow"}
           </button>
@@ -61,4 +63,5 @@ Person.propTypes = {
   email: PropTypes.string,
   avatar: PropTypes.string,
   deletePerson: PropTypes.func,
+  className: PropTypes.string,
 };

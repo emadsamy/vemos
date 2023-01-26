@@ -1,0 +1,7 @@
+REACT_APP_TITLE="Vemos"
+REACT_APP_BASE_API_URL="http://127.0.0.1:8000/api/v1"
+
+// to create or use .env
+1- create file called .evn.development && .evn.production
+2- npm install dotenv
+3- to use identifiers (keys) must starts by [REACT_APP_] for example REACT_APP_BASE_URL="https://api.com"

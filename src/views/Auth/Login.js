@@ -49,7 +49,7 @@ const Login = (props) => {
 
   let redirect = "";
   if (GetJwt()) {
-    redirect = <Navigate to="/newsfeed" />;
+    redirect = <Navigate to="/" />;
   }
 
   return (

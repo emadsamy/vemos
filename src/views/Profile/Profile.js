@@ -12,7 +12,7 @@ import Alert from "react-bootstrap/Alert";
 import AvatarPost from "../../assets/img/default.png";
 import moment from "moment";
 import toast from "react-hot-toast";
-import { ColorRing } from "react-loader-spinner";
+import { ColorRing, RotatingLines } from "react-loader-spinner";
 import { Tab, Tabs, TabList, TabPanel } from "react-tabs";
 import Form from "react-bootstrap/Form";
 import InputGroup from "react-bootstrap/InputGroup";
@@ -37,6 +37,7 @@ const Profile = ({}) => {
   const [amountBool, setAmountBool] = useState(false);
   const [success, setSuccess] = useState(false);
   const [loading, setLoading] = useState(false);
+  const [loadingAvatar, setLoadingAvatar] = useState(false);
   const [formStatus, setFormStatus] = useState(false);
   const [successTransfer, setSuccessTransfer] = useState(false);
   const [avatarUpdated, setAvatarUpdated] = useState("");
@@ -107,6 +108,7 @@ const Profile = ({}) => {
   };
 
   const changeAvatar = (event) => {
+    setLoadingAvatar(true);
     event.preventDefault();
     const formData = new FormData();
     formData.append("file", event.target.files[0]);
@@ -126,14 +128,18 @@ const Profile = ({}) => {
 
     axios(options)
       .then((response) => {
-        setLoading(false);
+        setLoadingAvatar(false);
         if (response.data.success) {
           toast.success(response.data.message);
           setAvatarUpdated(response.data.data.avatar);
         }
+
+        if (response.data.errors) {
+          toast.error(response.data.errors[0]);
+        }
       })
       .catch((error) => {
-        setLoading(false);
+        setLoadingAvatar(false);
       });
   };
 
@@ -152,10 +158,16 @@ const Profile = ({}) => {
               <div className={classes.profileLeft}>
                 <div className={classes.profileAvatar}>
                   <Avatar avatarUpdated={avatarUpdated} />
-                  <button disabled={loading} className={classes.changeAvatarBtn}>
-                    <Edit className={classes.avatarIcon} size={18} />
-                    <input onChange={changeAvatar} className={classes.changeAvatarInput} type="file" accept="image/*" />
-                  </button>
+                  {loadingAvatar ? (
+                    <div className={classes.backdrop}>
+                      <RotatingLines strokeColor="#fff" strokeWidth="5" animationDuration="0.75" width="26" visible={true} />
+                    </div>
+                  ) : (
+                    <button disabled={loading} className={classes.changeAvatarBtn}>
+                      <Edit className={classes.avatarIcon} size={18} />
+                      <input onChange={changeAvatar} className={classes.changeAvatarInput} type="file" accept="image/*" />
+                    </button>
+                  )}
                 </div>
                 <div className={`${classes.userData} text-center`}>
                   <div>

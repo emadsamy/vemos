@@ -15,6 +15,10 @@ import { LazyLoadImage, trackWindowScroll } from "react-lazy-load-image-componen
 import "react-lazy-load-image-component/src/effects/blur.css";
 import PropTypes from "prop-types";
 import { MoreHorizontal, ThumbsUp, MessageCircle, Share } from "react-feather";
+import { useSelector, useDispatch, shallowEqual } from "react-redux";
+import * as actions from "../../store/index";
+import { GetJwt } from "../../helpers/index";
+import { RotatingLines } from "react-loader-spinner";
 
 const PostCard = ({
   id,
@@ -32,6 +36,7 @@ const PostCard = ({
   deletePost,
   editPost,
   scrollPosition,
+  filterPostsUnfollow,
 }) => {
   const [loadingDelete, setLoadingDelete] = useState(false);
   const [loadingEdit, setLoadingEdit] = useState(false);
@@ -39,6 +44,16 @@ const PostCard = ({
   const [descriptionValue, setDescriptionValue] = useState(desc);
   const [likesCounter, setLikesCounter] = useState(0);
   const [isLiked, setIsLiked] = useState(false);
+  const [unfollowLoading, setUnfollowLoading] = useState(false);
+
+  const dispatch = useDispatch();
+  useState(() => {
+    if (GetJwt()) {
+      dispatch(actions.me());
+    }
+  }, [dispatch]);
+
+  const rows = useSelector((state) => state.me);
 
   // Delete Comment
   function deletePostHandle() {
@@ -178,13 +193,57 @@ const PostCard = ({
     getLikes();
   }, [id]);
 
+  const unfollowPerson = (sender_id, receiver_id) => {
+    setUnfollowLoading(true);
+    const token = localStorage.getItem("token");
+    const options = {
+      url: window.baseURL + "/unfollow",
+      method: "POST",
+      headers: {
+        Authorization: "Bearer " + token,
+        Accept: "application/json",
+      },
+      data: {
+        sender_id: sender_id,
+        receiver_id: receiver_id,
+      },
+    };
+    axios(options)
+      .then((res) => {
+        if (res.data.success) {
+          filterPostsUnfollow(res.data.data.id, res.data.success);
+        }
+        setUnfollowLoading(false);
+      })
+      .catch((err) => {
+        setUnfollowLoading(false);
+      });
+  };
+
   return (
     <>
       <div className={classes.postTop}>
         <div className={classes.postUser}>
           <img src={avatar ? avatar : AvatarPost} className={classes.userImg} alt={"User Name"} />
           <div className={classes.nameDate}>
-            <div className={classes.postName}>{name}</div>
+            <div>
+              <span className={classes.postName}>{name} </span>{" "}
+              {rows.id !== userId ? (
+                <>
+                  <button onClick={() => unfollowPerson(rows.id, userId, index)} className={`btn ${classes.unfollowBtn}`}>
+                    {unfollowLoading ? (
+                      <>
+                        <RotatingLines strokeColor="#fff" strokeWidth="5" animationDuration="0.75" width="21" visible={true} />
+                      </>
+                    ) : (
+                      "Unfollow"
+                    )}
+                  </button>
+                </>
+              ) : (
+                ""
+              )}
+            </div>
             <div className={classes.postDate}>{moment(createdAt).calendar()}</div>
           </div>
         </div>
@@ -274,18 +333,22 @@ const PostCard = ({
         </div>
       </div>
 
-      <div className={classes.postControl}>
-        <Dropdown>
-          <Dropdown.Toggle disabled={loadingEdit || loadingDelete} variant="Secondary">
-            <MoreHorizontal size={22} />
-          </Dropdown.Toggle>
+      {rows.id === userId ? (
+        <div className={classes.postControl}>
+          <Dropdown>
+            <Dropdown.Toggle disabled={loadingEdit || loadingDelete} variant="Secondary">
+              <MoreHorizontal size={22} />
+            </Dropdown.Toggle>
 
-          <Dropdown.Menu>
-            <Dropdown.Item onClick={setInputEditHandler}>Edit</Dropdown.Item>
-            <Dropdown.Item onClick={deletePostHandle}>Delete</Dropdown.Item>
-          </Dropdown.Menu>
-        </Dropdown>
-      </div>
+            <Dropdown.Menu>
+              <Dropdown.Item onClick={setInputEditHandler}>Edit</Dropdown.Item>
+              <Dropdown.Item onClick={deletePostHandle}>Delete</Dropdown.Item>
+            </Dropdown.Menu>
+          </Dropdown>
+        </div>
+      ) : (
+        ""
+      )}
     </>
   );
 };

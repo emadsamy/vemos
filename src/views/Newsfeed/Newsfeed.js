@@ -215,6 +215,16 @@ const Newsfeed = (props) => {
     }
   }
 
+  // Delete Post
+  function filterPostsUnfollow(id, status) {
+    if (status) {
+      // const postesFiltered = posts.filter((row) => row.user_id !== id);
+      // setPosts((posts) => [...postesFiltered]);
+
+      setPosts(posts.filter(({ user_id }) => user_id !== id));
+    }
+  }
+
   // function clearConsole() {
   //   if (window.console || window.console.firebug) {
   //     console.clear();
@@ -316,6 +326,7 @@ const Newsfeed = (props) => {
                           image={row.image}
                           deletePost={deletePost}
                           editPost={editPost}
+                          filterPostsUnfollow={filterPostsUnfollow}
                         />
                         <div className={classes.comments}>
                           <div className={classes.writeComment}>
@@ -338,6 +349,7 @@ const Newsfeed = (props) => {
                                     // key={comment.post_id}
                                     id={comment.id}
                                     index={comment_Index}
+                                    userId={comment.user.id}
                                     comment={comment.comment}
                                     avatar={comment.user.avatar ? comment.user.avatar : AvatarPost}
                                     name={comment.user.name ? comment.user.name : ""}

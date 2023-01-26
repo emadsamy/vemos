@@ -10,12 +10,23 @@ import Dropdown from "react-bootstrap/Dropdown";
 import toast from "react-hot-toast";
 import PropTypes from "prop-types";
 import { MoreHorizontal } from "react-feather";
+import { useSelector, useDispatch, shallowEqual } from "react-redux";
+import * as actions from "../../store/index";
+import { GetJwt } from "../../helpers/index";
 
-const Comment = ({ id, index, comment, name, email, avatar, createdAt, deleteComment, editComment }) => {
+const Comment = ({ id, index, userId, comment, name, email, avatar, createdAt, deleteComment, editComment }) => {
   const [loadingDelete, setLoadingDelete] = useState(false);
   const [loadingEdit, setLoadingEdit] = useState(false);
   const [toggleInputEdit, setToggleInputEdit] = useState(false);
   const [commentValue, setCommentValue] = useState(comment);
+
+  const dispatch = useDispatch();
+  useState(() => {
+    if (GetJwt()) {
+      dispatch(actions.me());
+    }
+  }, [dispatch]);
+  const rows = useSelector((state) => state.me);
 
   // Delete Comment
   function deleteCommentHandle() {
@@ -119,18 +130,22 @@ const Comment = ({ id, index, comment, name, email, avatar, createdAt, deleteCom
             )}
           </div>
         </div>
-        <div className={classes.userControl}>
-          <Dropdown>
-            <Dropdown.Toggle disabled={loadingEdit || loadingDelete} variant="Secondary" id="dropdown-basic">
-              <MoreHorizontal size={22} />
-            </Dropdown.Toggle>
+        {rows.id === userId ? (
+          <div className={classes.userControl}>
+            <Dropdown>
+              <Dropdown.Toggle disabled={loadingEdit || loadingDelete} variant="Secondary" id="dropdown-basic">
+                <MoreHorizontal size={22} />
+              </Dropdown.Toggle>
 
-            <Dropdown.Menu>
-              <Dropdown.Item onClick={() => setToggleInputEdit(true)}>Edit</Dropdown.Item>
-              <Dropdown.Item onClick={deleteCommentHandle}>Delete</Dropdown.Item>
-            </Dropdown.Menu>
-          </Dropdown>
-        </div>
+              <Dropdown.Menu>
+                <Dropdown.Item onClick={() => setToggleInputEdit(true)}>Edit</Dropdown.Item>
+                <Dropdown.Item onClick={deleteCommentHandle}>Delete</Dropdown.Item>
+              </Dropdown.Menu>
+            </Dropdown>
+          </div>
+        ) : (
+          ""
+        )}
       </div>
     </div>
   );
@@ -141,6 +156,7 @@ export { Comment };
 Comment.propTypes = {
   id: PropTypes.number.isRequired,
   index: PropTypes.number.isRequired,
+  userId: PropTypes.number.isRequired,
   comment: PropTypes.string.isRequired,
   name: PropTypes.string.isRequired,
   email: PropTypes.string.isRequired,

@@ -1,37 +1,38 @@
-import React, { useEffect, useState, useRef, createRef } from "react";
+import React, { useEffect, useState, useRef, Suspense } from "react";
 import { Route, Switch, NavLink, Navigate, useNavigate } from "react-router-dom";
 import axios from "axios";
-import classes from "./Newsfeed.module.css";
-import moment from "moment";
-import { Avatar } from "../../components/Avatar/Avatar";
-import AvatarPost from "../../assets/img/default.png";
+import classes from "./Persons.module.css";
+import { NavbarComponent } from "../../components/Navbar/Navbar";
+import { GetJwt } from "../../helpers/index";
 import Button from "react-bootstrap/Button";
-import toast from "react-hot-toast";
-import PropTypes from "prop-types";
-import { Person } from "../../components/Person/Person";
 import { useSelector, useDispatch, shallowEqual } from "react-redux";
 import * as actions from "../../store/index";
-import { GetJwt } from "../../helpers/index";
+import Alert from "react-bootstrap/Alert";
+import AvatarPost from "../../assets/img/default.png";
+import moment from "moment";
+import toast from "react-hot-toast";
 import { ColorRing } from "react-loader-spinner";
 import { CSSTransition, TransitionGroup } from "react-transition-group";
+import { Person } from "../../components/Person/Person";
 
 const Persons = (props) => {
-  const dispatch = useDispatch();
   const [loading, setLoading] = useState(false);
   const [persons, setPersons] = useState([]);
   const nodeRef = useRef(null);
-  const [count, seCount] = useState(0);
 
+  const dispatch = useDispatch();
   useState(() => {
-    dispatch(actions.me());
+    if (GetJwt()) {
+      dispatch(actions.me());
+    }
   }, [dispatch]);
   const rows = useSelector((state) => state.me);
 
   useState(() => {
-    fetchPersons();
-  }, [rows]);
+    getPersons();
+  }, []);
 
-  async function fetchPersons() {
+  function getPersons() {
     setLoading(true);
     const token = localStorage.getItem("token");
     const options = {
@@ -42,17 +43,19 @@ const Persons = (props) => {
         Accept: "application/json",
       },
     };
-    await axios(options)
+    axios(options)
       .then((response) => {
         setLoading(false);
-        console.log(response);
         setPersons(response.data.users);
-        seCount(response.data.count);
       })
-      .catch((err) => {
+      .catch((error) => {
         setLoading(false);
-        // dispatch(personsAction());
       });
+  }
+
+  let redirect = "";
+  if (!GetJwt()) {
+    redirect = <Navigate to="/login" />;
   }
 
   // Delete Comment
@@ -65,23 +68,24 @@ const Persons = (props) => {
 
   return (
     <>
+      {redirect}
+      <NavbarComponent />
       <div className={classes.personsContainer}>
-        {loading ? (
-          <div className={classes.spinnerPosts}>
-            <ColorRing
-              visible={true}
-              height="80"
-              width="80"
-              ariaLabel="blocks-loading"
-              wrapperStyle={{}}
-              wrapperClass="blocks-wrapper"
-              colors={["#0d6efd", "#0d6efd", "#0d6efd", "#0d6efd", "#0d6efd"]}
-            />
-          </div>
-        ) : count > 0 ? (
-          <TransitionGroup>
-            {persons.slice(0, 3).map((row, index) => (
-              <CSSTransition key={row.id} nodeRef={nodeRef} timeout={1000}>
+        <div className="container">
+          <h2 className={`mb-4`}>People you may know</h2>
+          <div className={classes.personsGrid}>
+            {loading ? (
+              <ColorRing
+                visible={true}
+                height="80"
+                width="80"
+                ariaLabel="blocks-loading"
+                wrapperStyle={{}}
+                wrapperClass="blocks-wrapper"
+                colors={["#0d6efd", "#0d6efd", "#0d6efd", "#0d6efd", "#0d6efd"]}
+              />
+            ) : (
+              persons.map((row, index) => (
                 <Person
                   deletePerson={deletePerson}
                   index={index}
@@ -91,21 +95,13 @@ const Persons = (props) => {
                   name={row.name}
                   email={row.email}
                   avatar={row.avatar}
+                  className={classes.personRow}
                 />
-              </CSSTransition>
-            ))}
-          </TransitionGroup>
-        ) : (
-          "Member not available yet"
-        )}
+              ))
+            )}
+          </div>
+        </div>
       </div>
-      {count > 0 ? (
-        <NavLink to="/persons" className={classes.peopleUrl}>
-          Show All
-        </NavLink>
-      ) : (
-        ""
-      )}
     </>
   );
 };

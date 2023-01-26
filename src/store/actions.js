@@ -32,12 +32,12 @@ export const register = (name, email, password, confirm_password) => {
     };
 
     axios(options)
-      .then((response) => {
+      .then((res) => {
         dispatch(loading(false));
-        if (response.data.errors) {
-          dispatch(registerAction(response.data, response.data.errors));
+        if (res.data.errors) {
+          dispatch(registerAction(res.data, res.data.errors));
         } else {
-          dispatch(registerAction(response.data));
+          dispatch(registerAction(res.data));
         }
       })
       .catch((error) => {
@@ -69,19 +69,19 @@ export const login = (email, password) => {
     };
 
     axios(options)
-      .then((response) => {
-        const token = response.data.access_token;
+      .then((res) => {
+        const token = res.data.access_token;
         if (token && token != null) {
-          localStorage.setItem("token", response.data.access_token);
+          localStorage.setItem("token", res.data.access_token);
         }
 
-        if (response.data.errors) {
-          dispatch(loginAction(response.data, response.data.errors));
+        if (res.data.errors) {
+          dispatch(loginAction(res.data, res.data.errors));
         } else {
-          dispatch(loginAction(response.data));
+          dispatch(loginAction(res.data));
         }
 
-        //   dispatch(loginAction(response, response.errors));
+        //   dispatch(loginAction(res, res.errors));
         dispatch(loading(false));
       })
       .catch((error) => {
@@ -140,8 +140,43 @@ export const persons = (id) => {
       },
     };
     axios(options)
-      .then((response) => {
-        dispatch(personsAction(response.data));
+      .then((res) => {
+        if (res.data.success) {
+          dispatch(personsAction(res.data.data));
+        }
+      })
+      .catch((err) => {
+        // dispatch(personsAction());
+      });
+  };
+};
+
+export const unfollowAction = (unfollow) => {
+  return {
+    type: actionType.UNFOLLOW,
+    unfollow: unfollow,
+  };
+};
+
+export const unfollow = (sender_id, receiver_id) => {
+  return (dispatch) => {
+    const token = localStorage.getItem("token");
+    const options = {
+      url: window.baseURL + "/unfollow",
+      method: "POST",
+      headers: {
+        Authorization: "Bearer " + token,
+        Accept: "application/json",
+      },
+      data: {
+        sender_id: sender_id,
+        receiver_id: receiver_id,
+      },
+    };
+    axios(options)
+      .then((res) => {
+        dispatch(unfollowAction(res.data.success));
+        console.log(res);
       })
       .catch((err) => {
         // dispatch(personsAction());

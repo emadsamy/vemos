@@ -37,9 +37,9 @@ const NavbarComponent = ({ avatarUpdated, fullName }) => {
             <Dropdown>
               {GetJwt() ? (
                 <div className="d-flex align-items-center">
-                  <div className={classes.balance}>
+                  {/* <div className={classes.balance}>
                     Balance <span className={classes.balanceValue}>{rows.balance}$</span>
-                  </div>
+                  </div> */}
                   {/* <NavLink to="/newsfeed" className={classes.navLink}>Profile</NavLink> */}
                   <Dropdown.Toggle className={classes.navDropdown} variant="Secondary" id="dropdown-basic">
                     <Avatar avatarUpdated={avatarUpdated} className={classes.avatar} />
@@ -50,7 +50,7 @@ const NavbarComponent = ({ avatarUpdated, fullName }) => {
                       <NavLink to="/profile">Profile</NavLink>
                     </div>
                     <div className={classes.dropdownLink}>
-                      <NavLink to="/newsfeed">News Feed</NavLink>
+                      <NavLink to="/">News Feed</NavLink>
                     </div>
                     <div className={classes.dropdownLink}>
                       <NavLink to="/logout">Logout</NavLink>

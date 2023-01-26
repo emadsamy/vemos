@@ -1,0 +1,13 @@
+.personsContainer {
+  padding-top: 35px;
+  padding-bottom: 50px;
+}
+.personsGrid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  grid-gap: 12.52rem;
+  gap: 15px;
+}
+.personRow {
+  margin-bottom: 0;
+}

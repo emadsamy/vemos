@@ -8,6 +8,7 @@ const initalState = {
   me: {},
   persons: {},
   personsLoading: true,
+  unfollow: {},
 };
 
 const reducer = (state = initalState, action) => {
@@ -43,6 +44,12 @@ const reducer = (state = initalState, action) => {
         ...state,
         // personsLoading: action.personsLoading,
         persons: action.persons,
+      };
+
+    case actionType.UNFOLLOW:
+      return {
+        ...state,
+        unfollow: action.unfollow,
       };
 
     default:
