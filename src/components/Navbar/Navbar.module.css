@@ -35,5 +35,9 @@
 }
 .navDropdown,
 .navDropdown:hover {
-  --bs-btn-color: #fff;
+  --bs-btn-color: #fff !important;
+}
+.navDropdown:active {
+  border: 1px solid transparent;
+  box-shadow: none;
 }

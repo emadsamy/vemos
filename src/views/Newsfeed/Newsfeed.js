@@ -18,6 +18,7 @@ import { Persons } from "./Persons";
 import toast from "react-hot-toast";
 import { ColorRing } from "react-loader-spinner";
 import TextareaAutosize from "react-textarea-autosize";
+import { Helmet } from "react-helmet";
 
 const Newsfeed = (props) => {
   const [loading, setLoading] = useState(false);
@@ -218,10 +219,8 @@ const Newsfeed = (props) => {
   // Delete Post
   function filterPostsUnfollow(id, status) {
     if (status) {
-      // const postesFiltered = posts.filter((row) => row.user_id !== id);
-      // setPosts((posts) => [...postesFiltered]);
-
-      setPosts(posts.filter(({ user_id }) => user_id !== id));
+      const newArr = posts.filter((row) => row.user_id !== id);
+      setPosts(newArr);
     }
   }
 
@@ -234,6 +233,9 @@ const Newsfeed = (props) => {
 
   return (
     <>
+      <Helmet>
+        <title>Newsfeed</title>
+      </Helmet>
       {/* <div id={"tracker"} className={classes.tracker}></div> */}
       {redirect}
       <NavbarComponent />
@@ -327,6 +329,9 @@ const Newsfeed = (props) => {
                           deletePost={deletePost}
                           editPost={editPost}
                           filterPostsUnfollow={filterPostsUnfollow}
+                          likesCount={row.like_counter ? row.like_counter.count : 0}
+                          likes={row.likes ? row.likes : null}
+                          // likes={row.likes && row.likes.map((like) => (parseInt(like.user_id) == rows.id ? true : false))}
                         />
                         <div className={classes.comments}>
                           <div className={classes.writeComment}>

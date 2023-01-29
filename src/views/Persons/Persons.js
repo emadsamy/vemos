@@ -14,6 +14,7 @@ import toast from "react-hot-toast";
 import { ColorRing } from "react-loader-spinner";
 import { CSSTransition, TransitionGroup } from "react-transition-group";
 import { Person } from "../../components/Person/Person";
+import { Helmet } from "react-helmet";
 
 const Persons = (props) => {
   const [loading, setLoading] = useState(false);
@@ -58,7 +59,7 @@ const Persons = (props) => {
     redirect = <Navigate to="/login" />;
   }
 
-  // Delete Comment
+  // Delete Person
   function deletePerson(index, status) {
     if (status) {
       persons.splice(index, 1);
@@ -68,13 +69,16 @@ const Persons = (props) => {
 
   return (
     <>
+      <Helmet>
+        <title>Persons</title>
+      </Helmet>
       {redirect}
       <NavbarComponent />
       <div className={classes.personsContainer}>
         <div className="container">
           <h2 className={`mb-4`}>People you may know</h2>
-          <div className={classes.personsGrid}>
-            {loading ? (
+          {loading ? (
+            <div className={classes.personsLoading}>
               <ColorRing
                 visible={true}
                 height="80"
@@ -84,8 +88,10 @@ const Persons = (props) => {
                 wrapperClass="blocks-wrapper"
                 colors={["#0d6efd", "#0d6efd", "#0d6efd", "#0d6efd", "#0d6efd"]}
               />
-            ) : (
-              persons.map((row, index) => (
+            </div>
+          ) : persons.length > 0 ? (
+            <div className={classes.personsGrid}>
+              {persons.map((row, index) => (
                 <Person
                   deletePerson={deletePerson}
                   index={index}
@@ -97,9 +103,11 @@ const Persons = (props) => {
                   avatar={row.avatar}
                   className={classes.personRow}
                 />
-              ))
-            )}
-          </div>
+              ))}
+            </div>
+          ) : (
+            "Member not available yet"
+          )}
         </div>
       </div>
     </>

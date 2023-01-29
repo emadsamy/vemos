@@ -12,7 +12,8 @@ code {
 .lazy-load-image-loaded {
   width: 100%;
 }
-.dropdown-toggle:not(.navbar .dropdown-menu::after)::after {
+.dropdown-toggle:not(.navbar .dropdown-menu::after)::after,
+.dropdown-toggle:not(.navbar .dropdown-menu::after)::after:hover {
   content: none !important;
 }
 .dropdown-menu {

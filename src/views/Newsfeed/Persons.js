@@ -78,7 +78,7 @@ const Persons = (props) => {
               colors={["#0d6efd", "#0d6efd", "#0d6efd", "#0d6efd", "#0d6efd"]}
             />
           </div>
-        ) : count > 0 ? (
+        ) : persons.length > 0 ? (
           <TransitionGroup>
             {persons.slice(0, 3).map((row, index) => (
               <CSSTransition key={row.id} nodeRef={nodeRef} timeout={1000}>
@@ -99,7 +99,7 @@ const Persons = (props) => {
           "Member not available yet"
         )}
       </div>
-      {count > 0 ? (
+      {persons.length > 0 ? (
         <NavLink to="/persons" className={classes.peopleUrl}>
           Show All
         </NavLink>

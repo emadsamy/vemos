@@ -12,6 +12,7 @@ import Logo from "../../assets/img/logo.png";
 import { useForm, Controller } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
+import { Helmet } from "react-helmet";
 
 const schema = yup
   .object({
@@ -81,6 +82,9 @@ const Register = (props) => {
 
   return (
     <>
+      <Helmet>
+        <title>Register</title>
+      </Helmet>
       {redirect}
       <div className={classes.authContainer}>
         <div>

@@ -10,6 +10,7 @@ import Alert from "react-bootstrap/Alert";
 import { GetJwt } from "../../helpers/index";
 import Logo from "../../assets/img/logo.png";
 import { useForm, Controller } from "react-hook-form";
+import { Helmet } from "react-helmet";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
 
@@ -54,6 +55,9 @@ const Login = (props) => {
 
   return (
     <>
+      <Helmet>
+        <title>Login</title>
+      </Helmet>
       {redirect}
       <div className={classes.authContainer}>
         <div>

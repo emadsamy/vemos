@@ -82,6 +82,18 @@
   font-weight: 600;
   word-break: break-all;
   text-transform: capitalize;
+  position: relative;
+  z-index: 10;
+}
+.postName:before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 100%;
+  z-index: -8;
+  height: 40px;
+  background-color: transparent;
 }
 .postDate {
   font-size: 15px;
@@ -360,20 +372,107 @@
 .peopleUrl:active {
   opacity: 0.7;
 }
-.unfollowBtn {
+.followingBtn,
+.followBtn {
   font-weight: 500;
   padding: 0;
   border: none;
-  background: #f00;
+  background: #0d6efd;
   color: #fff !important;
   text-decoration: none;
-  font-size: 13px;
-  padding: 2px 7px;
+  font-size: 14.5px;
+  padding: 6px 12px;
+  line-height: 1;
+  margin-top: -3px;
+  display: flex;
 }
-.unfollowBtn:hover {
-  background: #cc0303 !important;
+.followingBtn span,
+.followBtn span {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.followIcon {
+  margin-right: 7px;
+}
+.followingBtn:hover {
+  background: #0d6efd !important;
   opacity: 0.7;
 }
-.unfollowBtn:active {
+.followingBtn:active,
+.followBtn:active {
   opacity: 0.4;
+}
+.followBtn {
+  background: #e8e8e8;
+  color: #0d6efd !important;
+}
+div .followBtn:hover {
+  background: #e8e8e8 !important;
+  opacity: 0.8;
+}
+.userCard {
+  position: relative;
+  cursor: pointer;
+}
+.userHoverd {
+  position: absolute;
+  left: 0;
+  top: 30px;
+  width: 350px;
+  background: #fff;
+  box-shadow: rgba(0, 0, 0, 0.05) 0px 6px 24px 0px, rgba(0, 0, 0, 0.08) 0px 0px 0px 1px;
+  border-radius: 6px;
+  overflow: hidden;
+  z-index: 20;
+  display: none;
+}
+.postName:hover .userHoverd {
+  display: block !important;
+}
+.userHoverdCover {
+  height: 95px;
+  background: #0d6efd;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.userHoverdCover img {
+  width: 110px;
+}
+.userHoverdDetails {
+  margin-top: -40px;
+  padding: 0 15px 15px 15px;
+  display: flex;
+  align-items: center;
+}
+.userHoverdDetails img {
+  width: 80px;
+  height: 80px;
+  object-fit: cover;
+  border-radius: 50%;
+  box-shadow: rgba(50, 50, 93, 0.25) 0px 2px 5px -1px, rgba(0, 0, 0, 0.3) 0px 1px 3px -1px;
+}
+.nameEmail {
+  padding: 0 10px;
+  width: calc(100% - 80px);
+}
+.hoverdName {
+  color: #fff;
+  font-weight: 600;
+  font-size: 17px;
+  line-height: 1;
+  margin-bottom: 5px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  width: 100%;
+}
+.hoverdEmail {
+  color: #666;
+}
+.followStatusBtn {
+  padding: 5px 15px 15px 15px;
+  display: flex;
+  justify-content: flex-end;
 }

@@ -11,3 +11,8 @@
 .personRow {
   margin-bottom: 0;
 }
+.personsLoading {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}

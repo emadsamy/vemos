@@ -19,6 +19,8 @@ import { useSelector, useDispatch, shallowEqual } from "react-redux";
 import * as actions from "../../store/index";
 import { GetJwt } from "../../helpers/index";
 import { RotatingLines } from "react-loader-spinner";
+import Logo from "../../assets/img/logo.png";
+import { UserCheck, Plus } from "react-feather";
 
 const PostCard = ({
   id,
@@ -37,14 +39,17 @@ const PostCard = ({
   editPost,
   scrollPosition,
   filterPostsUnfollow,
+  likesCount,
+  likes,
 }) => {
   const [loadingDelete, setLoadingDelete] = useState(false);
   const [loadingEdit, setLoadingEdit] = useState(false);
   const [toggleInputEdit, setToggleInputEdit] = useState(false);
   const [descriptionValue, setDescriptionValue] = useState(desc);
-  const [likesCounter, setLikesCounter] = useState(0);
+  const [likesCounter, setLikesCounter] = useState(likesCount);
   const [isLiked, setIsLiked] = useState(false);
-  const [unfollowLoading, setUnfollowLoading] = useState(false);
+  const [followLoading, setfollowLoading] = useState(false);
+  const [followStatus, setFollowStatus] = useState(true);
 
   const dispatch = useDispatch();
   useState(() => {
@@ -55,7 +60,7 @@ const PostCard = ({
 
   const rows = useSelector((state) => state.me);
 
-  // Delete Comment
+  // Delete Post
   function deletePostHandle() {
     setLoadingDelete(true);
     const token = localStorage.getItem("token");
@@ -120,65 +125,6 @@ const PostCard = ({
       });
   }
 
-  // Get Likes
-  async function getLikes() {
-    const token = localStorage.getItem("token");
-    const options = {
-      url: window.baseURL + "/get_likes/" + id,
-      method: "POST",
-      headers: {
-        Authorization: "Bearer " + token,
-        Accept: "application/json",
-      },
-      data: {
-        user_id: userId,
-        post_id: id,
-      },
-    };
-    await axios(options)
-      .then((response) => {
-        // if (response.data.is_liked > 0) {
-        //   setIsLiked(true);
-        // } else {
-        //   setIsLiked(false);
-        // }
-        console.log(response);
-        setLikesCounter(response.data.count);
-      })
-      .catch((error) => {
-        console.log(error);
-      });
-  }
-
-  // Add Like
-  function toggleLike() {
-    if (isLiked) {
-      setLikesCounter(likesCounter - 1);
-      setIsLiked(false);
-    } else {
-      setIsLiked(true);
-      setLikesCounter(likesCounter + 1);
-    }
-    const token = localStorage.getItem("token");
-    const options = {
-      url: window.baseURL + "/toggle_like",
-      method: "POST",
-      headers: {
-        Authorization: "Bearer " + token,
-        Accept: "application/json",
-      },
-      data: {
-        user_id: userId,
-        post_id: id,
-      },
-    };
-    axios(options)
-      .then((response) => {})
-      .catch((error) => {
-        console.log(error);
-      });
-  }
-
   const setInputEditHandler = () => {
     setToggleInputEdit(true);
     setDescriptionValue(desc);
@@ -189,12 +135,8 @@ const PostCard = ({
     setDescriptionValue(desc);
   };
 
-  useEffect(() => {
-    getLikes();
-  }, [id]);
-
   const unfollowPerson = (sender_id, receiver_id) => {
-    setUnfollowLoading(true);
+    setfollowLoading(true);
     const token = localStorage.getItem("token");
     const options = {
       url: window.baseURL + "/unfollow",
@@ -211,13 +153,154 @@ const PostCard = ({
     axios(options)
       .then((res) => {
         if (res.data.success) {
-          filterPostsUnfollow(res.data.data.id, res.data.success);
+          // filterPostsUnfollow(res.data.data.id, res.data.success);
+          toast.error(`You Unfollowed ${name}`);
+          setFollowStatus(false);
+          if (res.data.data.receiver_id) {
+            setFollowStatus(false);
+          }
         }
-        setUnfollowLoading(false);
+        setfollowLoading(false);
       })
       .catch((err) => {
-        setUnfollowLoading(false);
+        setfollowLoading(false);
       });
+  };
+
+  const followPerson = (sender_id, receiver_id) => {
+    setfollowLoading(true);
+    const token = localStorage.getItem("token");
+    const options = {
+      url: window.baseURL + "/follow",
+      method: "POST",
+      headers: {
+        Authorization: "Bearer " + token,
+        Accept: "application/json",
+      },
+      data: {
+        sender_id: sender_id,
+        receiver_id: receiver_id,
+      },
+    };
+    axios(options)
+      .then((res) => {
+        setfollowLoading(false);
+        if (res.data.success) {
+          toast.success(`You followed ${name}`);
+          setFollowStatus(true);
+        }
+      })
+      .catch((err) => {
+        setfollowLoading(false);
+      });
+  };
+
+  function checkAuthLiked() {
+    // likes && likes.map((row) => (parseInt(row.user_id) === rows.id ? setIsLiked(true) : setIsLiked(false)));
+
+    let result = false;
+    if (likes) {
+      if (likes.length > 0) {
+        let check = likes.filter((row) => row.user_id == rows.id);
+        if (check.length > 0) {
+          result = true;
+        }
+        // console.log(result);
+      } else {
+        result = likes.user_id == rows.id;
+        // console.log(result);
+      }
+      setIsLiked(result);
+    }
+  }
+
+  useEffect(() => {
+    checkAuthLiked();
+  }, [likes]);
+
+  useEffect(() => {
+    // setLikesCounter((likesCounter) => likesCounter);
+  }, [filterPostsUnfollow]);
+
+  async function addLike() {
+    setIsLiked(true);
+    setLikesCounter(likesCount + 1);
+    const token = localStorage.getItem("token");
+    const options = {
+      url: window.baseURL + "/add_like",
+      method: "POST",
+      headers: {
+        Authorization: "Bearer " + token,
+        Accept: "application/json",
+      },
+      data: {
+        user_id: rows.id,
+        post_id: id,
+      },
+    };
+    await axios(options)
+      .then((response) => {
+        console.log(response.data);
+        // if (response.data.success) {
+        //   setLikesCounter(response.data.count);
+        // }
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  }
+
+  async function deleteLike() {
+    setIsLiked(false);
+    setLikesCounter(likesCount == 0 ? 0 : likesCount - 1);
+    const token = localStorage.getItem("token");
+    const options = {
+      url: window.baseURL + "/delete_like",
+      method: "POST",
+      headers: {
+        Authorization: "Bearer " + token,
+        Accept: "application/json",
+      },
+      data: {
+        user_id: rows.id,
+        post_id: id,
+      },
+    };
+    await axios(options)
+      .then((response) => {
+        console.log(response.data);
+        // if (response.data.success) {
+        //   setLikesCounter(response.data.count);
+        // }
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  }
+
+  const checkPerson = (sender_id, receiver_id) => {
+    const token = localStorage.getItem("token");
+    const options = {
+      url: window.baseURL + "/check_person",
+      method: "POST",
+      headers: {
+        Authorization: "Bearer " + token,
+        Accept: "application/json",
+      },
+      data: {
+        sender_id: sender_id,
+        receiver_id: receiver_id,
+      },
+    };
+    axios(options)
+      .then((res) => {
+        if (res.data.success) {
+          setFollowStatus(true);
+        } else {
+          setFollowStatus(false);
+        }
+      })
+      .catch((err) => {});
   };
 
   return (
@@ -226,23 +309,90 @@ const PostCard = ({
         <div className={classes.postUser}>
           <img src={avatar ? avatar : AvatarPost} className={classes.userImg} alt={"User Name"} />
           <div className={classes.nameDate}>
-            <div>
-              <span className={classes.postName}>{name} </span>{" "}
-              {rows.id !== userId ? (
-                <>
-                  <button onClick={() => unfollowPerson(rows.id, userId, index)} className={`btn ${classes.unfollowBtn}`}>
-                    {unfollowLoading ? (
+            <div className={classes.userCard}>
+              <div onMouseEnter={() => checkPerson(rows.id, userId, index)} className={classes.postName}>
+                {name}
+                <div className={classes.userHoverd}>
+                  <div className={classes.userHoverdCover}>
+                    <img className={`img-fluid`} src={Logo} alt={name} />
+                  </div>
+                  <div className={classes.userHoverdDetails}>
+                    <img className={`img-fluid`} src={avatar} alt={name} />
+                    <div className={classes.nameEmail}>
+                      <div className={`text-capitalize ${classes.hoverdName}`}>{name}</div>
+                      <div className={classes.hoverdEmail}>{email}</div>
+                    </div>
+                  </div>
+                  {rows.id !== userId ? (
+                    <div className={classes.followStatusBtn}>
+                      {followStatus ? (
+                        <button onClick={() => unfollowPerson(rows.id, userId, index)} className={`btn ${classes.followingBtn}`}>
+                          {followLoading ? (
+                            <>
+                              <RotatingLines
+                                strokeColor="#fff"
+                                strokeWidth="5"
+                                animationDuration="0.75"
+                                width="18"
+                                visible={true}
+                              />
+                            </>
+                          ) : (
+                            <span>
+                              <UserCheck className={classes.followIcon} width="18" /> Following
+                            </span>
+                          )}
+                        </button>
+                      ) : (
+                        <button onClick={() => followPerson(rows.id, userId, index)} className={`btn ${classes.followBtn}`}>
+                          {followLoading ? (
+                            <>
+                              <RotatingLines
+                                strokeColor="#0d6efd"
+                                strokeWidth="5"
+                                animationDuration="0.75"
+                                width="18"
+                                visible={true}
+                              />
+                            </>
+                          ) : (
+                            <span>
+                              <Plus className={classes.followIcon} width="18" /> Follow
+                            </span>
+                          )}
+                        </button>
+                      )}
+                    </div>
+                  ) : (
+                    ""
+                  )}
+                </div>
+              </div>
+              {/* {rows.id !== userId ? (
+                followStatus ? (
+                  <button onClick={() => unfollowPerson(rows.id, userId, index)} className={`btn ${classes.followingBtn}`}>
+                    {followLoading ? (
                       <>
-                        <RotatingLines strokeColor="#fff" strokeWidth="5" animationDuration="0.75" width="21" visible={true} />
+                        <RotatingLines strokeColor="#fff" strokeWidth="5" animationDuration="0.75" width="18" visible={true} />
                       </>
                     ) : (
-                      "Unfollow"
+                      "Following"
                     )}
                   </button>
-                </>
+                ) : (
+                  <button onClick={() => followPerson(rows.id, userId, index)} className={`btn ${classes.followBtn}`}>
+                    {followLoading ? (
+                      <>
+                        <RotatingLines strokeColor="#0d6efd" strokeWidth="5" animationDuration="0.75" width="18" visible={true} />
+                      </>
+                    ) : (
+                      "Follow"
+                    )}
+                  </button>
+                )
               ) : (
                 ""
-              )}
+              )} */}
             </div>
             <div className={classes.postDate}>{moment(createdAt).calendar()}</div>
           </div>
@@ -316,15 +466,21 @@ const PostCard = ({
 
         <div className={classes.eventsCounter}>
           <div className={classes.likeCounter}>
-            <img className={`img-fluid ${classes.likeCountIcon}`} src={LikeImg} alt="like" /> {likesCounter}
+            <img className={`img-fluid ${classes.likeCountIcon}`} src={LikeImg} alt="like" /> {id ? likesCounter : null}
           </div>
         </div>
 
         <div className={classes.postEvents}>
-          <button className={isLiked ? classes.liked : ""} onClick={toggleLike}>
-            <ThumbsUp size={21} className={classes.eventIcon} /> {isLiked ? "Liked" : "Like"}
-          </button>
-          <button disabled={true}>
+          {isLiked ? (
+            <button onClick={deleteLike} className={classes.liked}>
+              <ThumbsUp size={21} className={classes.eventIcon} /> Liked
+            </button>
+          ) : (
+            <button onClick={addLike}>
+              <ThumbsUp size={21} className={classes.eventIcon} /> Like
+            </button>
+          )}
+          <button>
             <MessageCircle size={21} className={classes.eventIcon} /> Comment
           </button>
           <button disabled={true}>
@@ -371,4 +527,6 @@ PostCard.propTypes = {
   deletePost: PropTypes.func,
   editPost: PropTypes.func,
   scrollPosition: PropTypes.string,
+  likesCount: PropTypes.number,
+  likes: PropTypes.array,
 };

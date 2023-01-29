@@ -147,3 +147,7 @@
   align-items: center;
   justify-content: center;
 }
+.transferBtn:disabled {
+  opacity: 0.7 !important;
+  cursor: not-allowed !important;
+}

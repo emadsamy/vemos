@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { Navigate, useNavigate } from "react-router-dom";
 import { GetJwt } from "../../helpers/index";
 import axios from "axios";
+import { Helmet } from "react-helmet";
 
 const Logout = () => {
   let redirect = "";

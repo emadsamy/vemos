@@ -17,28 +17,41 @@ import { Tab, Tabs, TabList, TabPanel } from "react-tabs";
 import Form from "react-bootstrap/Form";
 import InputGroup from "react-bootstrap/InputGroup";
 import Cleave from "cleave.js/react";
-import { useForm, Controller } from "react-hook-form";
 import { ErrorMessage } from "@hookform/error-message";
 import { SuccessTransfer } from "./SuccessTransfer";
 import { Information } from "./Information";
 import { Edit } from "react-feather";
+import { Helmet } from "react-helmet";
+import { useForm, Controller } from "react-hook-form";
+import { yupResolver } from "@hookform/resolvers/yup";
+import * as yup from "yup";
+
+const schema = yup
+  .object({
+    email: yup.string().email("Email must be a valid email").min(6, "Too many characters").required("Email address is required"),
+    price: yup.number().min(1, "Too Many Numbers").required("Price is required"),
+  })
+  .required();
 
 const Profile = ({}) => {
   const {
     register,
-    reset,
     setValue,
     handleSubmit,
+    reset,
     watch,
     control,
     formState: { errors },
-  } = useForm();
-  const [price, setPrice] = useState(0);
-  const [amountBool, setAmountBool] = useState(false);
-  const [success, setSuccess] = useState(false);
+  } = useForm({
+    resolver: yupResolver(schema),
+  });
+
+  const [totalPrice, setTotalPrice] = useState(false);
+  const [currentPrice, setCurrentPrice] = useState(0);
+  const [emailReceiver, setEmailReceiver] = useState("");
   const [loading, setLoading] = useState(false);
   const [loadingAvatar, setLoadingAvatar] = useState(false);
-  const [formStatus, setFormStatus] = useState(false);
+  const [transferLoading, setTransferLoading] = useState(false);
   const [successTransfer, setSuccessTransfer] = useState(false);
   const [avatarUpdated, setAvatarUpdated] = useState("");
   const dispatch = useDispatch();
@@ -55,52 +68,43 @@ const Profile = ({}) => {
     redirect = <Navigate to="/login" />;
   }
 
-  function priceHandler(e) {
-    const amount = parseInt(e.target.rawValue);
-    setPrice(e.target.rawValue);
-    if (amount >= rows.balance) {
-      setAmountBool(true);
-      setFormStatus(true);
-    } else {
-      setAmountBool(false);
-      setFormStatus(false);
-    }
-  }
-
-  useEffect(() => {
-    if (watch().email === "" || price >= rows.balance) {
-      setFormStatus(true);
-    } else {
-      setFormStatus(false);
-    }
-  }, [watch()]);
-
   const onSubmit = (data) => {
-    // setSuccessTransfer(true)
-    setLoading(true);
-    const token = localStorage.getItem("token");
-    const options = {
-      url: window.baseURL + "/transfer-money",
-      method: "POST",
-      headers: {
-        Authorization: "Bearer " + token,
-        Accept: "application/json",
-      },
-      data: {
-        email: data.email,
-        balance: price,
-      },
-    };
-    axios(options)
-      .then((res) => {
-        const data = res;
-        console.log(data);
-        setLoading(false);
-      })
-      .catch((err) => {
-        console.log(err);
-        setLoading(false);
-      });
+    setTransferLoading(true);
+    if (totalPrice) {
+      const token = localStorage.getItem("token");
+      const options = {
+        url: window.baseURL + "/transfer_money",
+        method: "POST",
+        headers: {
+          Authorization: "Bearer " + token,
+          Accept: "application/json",
+        },
+        data: {
+          email_authd: rows.email,
+          email_receiver: data.email,
+          balance: Math.floor(data.price),
+        },
+      };
+      axios(options)
+        .then((res) => {
+          if (res.data.success) {
+            setCurrentPrice(res.data.balance);
+            setEmailReceiver(data.email);
+            setSuccessTransfer(true);
+            reset({
+              email: "",
+              price: "",
+            });
+          }
+          setTransferLoading(false);
+        })
+        .catch((err) => {
+          console.log(err);
+          setTransferLoading(false);
+        });
+    } else {
+      alert(`${data.price}$ greater than your balance ${rows.balance}$`);
+    }
   };
 
   const updateData = (name, email) => {
@@ -145,7 +149,15 @@ const Profile = ({}) => {
 
   return (
     <>
-      <SuccessTransfer show={successTransfer} onHide={() => setSuccessTransfer(false)} />
+      <Helmet>
+        <title>{rows.name}</title>
+      </Helmet>
+      <SuccessTransfer
+        email={emailReceiver}
+        balance={currentPrice}
+        show={successTransfer}
+        onHide={() => setSuccessTransfer(false)}
+      />
       {redirect}
       <NavbarComponent avatarUpdated={avatarUpdated} fullName={fullName} />
       <div className={classes.profile}>
@@ -173,7 +185,7 @@ const Profile = ({}) => {
                   <div>
                     Name: <span className={`text-capitalize`}>{fullName ? fullName : rows.name}</span>
                   </div>
-                  <div>Balance: {rows.balance} $</div>
+                  <div>Balance: {currentPrice ? currentPrice : rows.balance} $</div>
                 </div>
                 <TabList className={classes.tabList}>
                   <Tab className={classes.tabBtn}>Profile Information</Tab>
@@ -181,13 +193,16 @@ const Profile = ({}) => {
                 </TabList>
               </div>
               <div className={classes.profileRight}>
+                {/* Information */}
                 <TabPanel>
                   <Information updateData={updateData} />
                 </TabPanel>
+
+                {/* Transfer Money */}
                 <TabPanel>
                   <h2 className={`mb-5`}>💸 Send Money</h2>
-                  <form onSubmit={handleSubmit(onSubmit)}>
-                    <div className={classes.formGroup}>
+                  <Form onSubmit={handleSubmit(onSubmit)}>
+                    {/* <div className={classes.formGroup}>
                       <div className={classes.fgFlexable}>
                         <div className={classes.formTitle}>Price</div>
                         <div>
@@ -202,32 +217,71 @@ const Profile = ({}) => {
                         </div>
                       </div>
                       <p>{}</p>
-                    </div>
+                    </div> */}
 
-                    <div className={classes.formGroup}>
-                      <div className={classes.fgFlexable}>
-                        <div className={classes.formTitle}>Email</div>
-                        <div>
-                          <Controller
-                            name="email"
-                            control={control}
-                            render={({ field }) => (
-                              <input
-                                {...field}
-                                {...register("email", { required: "Email is required to complete your transiction" })}
-                                placeholder="example@example.com"
-                                className={`${classes.formInput} ${errors.email ? classes.formInvalid : ""}`}
-                              />
-                            )}
-                          />
-                        </div>
+                    <Form.Group className={`${classes.formGroup} mb-3`} controlId="formEmail">
+                      <div>
+                        <Form.Label className={classes.formTitle}>Email</Form.Label>
+                        <Controller
+                          className={classes.authInput}
+                          name="email"
+                          control={control}
+                          {...register("email")}
+                          aria-invalid={errors.email ? true : false}
+                          render={({ field }) => (
+                            <Form.Control
+                              disabled={loading}
+                              className={`${classes.formInput} ${errors.email ? classes.formInvalid : ""}`}
+                              {...field}
+                              placeholder="example@example.com"
+                            />
+                          )}
+                        />
+                        {errors.email && (
+                          <p className={classes.pError} role="alert">
+                            {errors.email?.message}
+                          </p>
+                        )}
                       </div>
-                      <p>{errors.email?.message}</p>
-                    </div>
-                    <Button disabled={formStatus} variant="success" type="submit">
-                      Transfer Now
+                    </Form.Group>
+
+                    <Form.Group className={`${classes.formGroup} mb-3`} controlId="formEmail">
+                      <div>
+                        <Form.Label className={classes.formTitle}>Price</Form.Label>
+                        <Controller
+                          className={classes.authInput}
+                          name="price"
+                          control={control}
+                          {...register("price", {
+                            onChange: (e) => {
+                              if (e.target.value > rows.balance) {
+                                setTotalPrice(false);
+                              } else {
+                                setTotalPrice(true);
+                              }
+                            },
+                          })}
+                          aria-invalid={errors.price ? true : false}
+                          render={({ field }) => (
+                            <Form.Control
+                              disabled={loading}
+                              className={`${classes.formInput} ${errors.price ? classes.formInvalid : ""}`}
+                              {...field}
+                              placeholder="1234"
+                            />
+                          )}
+                        />
+                        {errors.price && (
+                          <p className={classes.pError} role="alert">
+                            {errors.price?.message}
+                          </p>
+                        )}
+                      </div>
+                    </Form.Group>
+                    <Button className={classes.transferBtn} disabled={transferLoading} variant="success" type="submit">
+                      {transferLoading ? "Loading..." : "Transfer Now"}
                     </Button>
-                  </form>
+                  </Form>
                 </TabPanel>
               </div>
             </div>
