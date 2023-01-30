@@ -15,12 +15,15 @@
   box-shadow: rgba(17, 17, 26, 0.05) 0px 1px 0px, rgba(17, 17, 26, 0.1) 0px 0px 8px;
 }
 .personDetails {
-  width: calc(100% - 140px);
+  width: calc(100% - 120px);
   padding: 18px 19px;
 }
 .personName {
   font-size: 18px;
   font-weight: 600;
+  text-overflow: ellipsis;
+  overflow-x: hidden;
+  white-space: nowrap;
 }
 .personFollowers {
   font-size: 15px;
@@ -61,4 +64,68 @@
 }
 .followBtn:disabled:active {
   transform: scale(1);
+}
+
+/* Extra small devices (portrait phones, less than 576px) */
+@media (max-width: 575.98px) {
+}
+
+@media (max-width: 767.98px) {
+  .personimg {
+    width: 90px;
+    height: 90px;
+  }
+  .personDetails {
+    width: calc(100% - 90px);
+    padding: 8px 19px;
+  }
+  .personName {
+    font-size: 16px;
+  }
+  .personFollowers {
+    margin-bottom: 9px;
+  }
+  .followBtn {
+    padding: 6px;
+    font-size: 14px;
+  }
+}
+
+/* Small devices (landscape phones, 576px and up) */
+@media (min-width: 576px) and (max-width: 767.98px) {
+}
+
+/* Medium devices (tablets, 768px and up) */
+@media (min-width: 768px) and (max-width: 991.98px) {
+  .personName {
+    font-size: 18px;
+    font-weight: 600;
+  }
+  .personimg {
+    width: 100px;
+    height: 100px;
+  }
+  .personDetails {
+    width: calc(100% - 100px);
+    padding: 13px 19px;
+  }
+  .personFollowers {
+    margin-bottom: 10px;
+  }
+  .followBtn {
+    padding: 6px;
+  }
+}
+
+/* Large devices (desktops, 992px and up) */
+@media (min-width: 992px) and (max-width: 1199.98px) {
+}
+@media (min-width: 768px) and (max-width: 1399.98px) {
+}
+
+/* Extra large devices (large desktops, 1200px and up) */
+@media (min-width: 1200px) and (max-width: 1399.98px) {
+}
+
+@media (min-width: 1400px) {
 }

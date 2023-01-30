@@ -26,44 +26,46 @@ const NavbarComponent = ({ avatarUpdated, fullName }) => {
     <div className={classes.navbarContainer}>
       <Navbar collapseOnSelect expand="lg" bg="dark" variant="dark">
         <Container>
-          <NavLink to="/">
-            <Navbar.Brand>
-              <img className={`img-fluid ${classes.logo}`} src={Logo} alt="Logo" />
-            </Navbar.Brand>
-          </NavLink>
-          <Navbar.Collapse id="responsive-navbar-nav">
-            <Nav className="me-auto"></Nav>
-            <Dropdown>
-              {GetJwt() ? (
-                <div className="d-flex align-items-center">
-                  <Dropdown.Toggle className={classes.navDropdown} variant="Secondary" id="dropdown-basic">
-                    <Avatar avatarUpdated={avatarUpdated} className={classes.avatar} />
-                    <span className={`${classes.userName} text-capitalize`}>{fullName ? fullName : rows.name}</span>
-                  </Dropdown.Toggle>
-                  <Dropdown.Menu className={`text-capitalize`} id="collasible-nav-dropdown">
-                    <div className={classes.dropdownLink}>
-                      <NavLink to="/profile">Profile</NavLink>
-                    </div>
-                    <div className={classes.dropdownLink}>
-                      <NavLink to="/">News Feed</NavLink>
-                    </div>
-                    <div className={classes.dropdownLink}>
-                      <NavLink to="/logout">Logout</NavLink>
-                    </div>
-                  </Dropdown.Menu>
-                </div>
-              ) : (
-                <div>
-                  <NavLink to="/register" className={classes.navLink}>
-                    Register
-                  </NavLink>
-                  <NavLink to="/login" className={classes.navLink}>
-                    Login
-                  </NavLink>
-                </div>
-              )}
-            </Dropdown>
-          </Navbar.Collapse>
+          <div className={classes.navbarFlex}>
+            <NavLink to="/">
+              <Navbar.Brand>
+                <img className={`img-fluid ${classes.logo}`} src={Logo} alt="Logo" />
+              </Navbar.Brand>
+            </NavLink>
+            <Navbar.Collapse className={classes.navItems} id="responsive-navbar-nav">
+              <Nav className="me-auto"></Nav>
+              <Dropdown>
+                {GetJwt() ? (
+                  <div className="d-flex align-items-center">
+                    <Dropdown.Toggle className={classes.navDropdown} variant="Secondary" id="dropdown-basic">
+                      <Avatar avatarUpdated={avatarUpdated} className={classes.avatar} />
+                      <span className={`${classes.userName} text-capitalize`}>{fullName ? fullName : rows.name}</span>
+                    </Dropdown.Toggle>
+                    <Dropdown.Menu className={`text-capitalize`} id="collasible-nav-dropdown">
+                      <div className={classes.dropdownLink}>
+                        <NavLink to="/profile">Profile</NavLink>
+                      </div>
+                      <div className={classes.dropdownLink}>
+                        <NavLink to="/">News Feed</NavLink>
+                      </div>
+                      <div className={classes.dropdownLink}>
+                        <NavLink to="/logout">Logout</NavLink>
+                      </div>
+                    </Dropdown.Menu>
+                  </div>
+                ) : (
+                  <div>
+                    <NavLink to="/register" className={classes.navLink}>
+                      Register
+                    </NavLink>
+                    <NavLink to="/login" className={classes.navLink}>
+                      Login
+                    </NavLink>
+                  </div>
+                )}
+              </Dropdown>
+            </Navbar.Collapse>
+          </div>
         </Container>
       </Navbar>
     </div>

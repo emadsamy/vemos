@@ -41,3 +41,12 @@
   border: 1px solid transparent;
   box-shadow: none;
 }
+.navbarFlex {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+}
+.navItems {
+  display: flex !important;
+}

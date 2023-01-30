@@ -16,7 +16,7 @@
   object-fit: cover;
   margin-right: 15px;
   border-radius: 50%;
-  box-shadow: rgba(9, 30, 66, 0.25) 0px 1px 1px, rgba(9, 30, 66, 0.13) 0px 0px 1px 1px;
+  box-shadow: rgb(0 0 0 / 12%) 0px 1px 3px, rgb(0 0 0 / 24%) 0px 1px 2px;
 }
 .flexable {
   display: flex;
@@ -189,6 +189,7 @@
   object-fit: cover;
   border-radius: 100%;
   margin-right: 15px;
+  box-shadow: rgba(60, 64, 67, 0.3) 0px 1px 2px 0px, rgba(60, 64, 67, 0.15) 0px 1px 3px 1px;
 }
 .commentRow {
   display: flex;
@@ -475,4 +476,126 @@ div .followBtn:hover {
   padding: 5px 15px 15px 15px;
   display: flex;
   justify-content: flex-end;
+}
+
+/* Extra small devices (portrait phones, less than 576px) */
+@media (max-width: 575.98px) {
+}
+
+@media (max-width: 767.98px) {
+  .newsfeedFlex {
+    flex-direction: column-reverse;
+  }
+  .newsfeed {
+    padding: 30px 0;
+  }
+  .postTitle {
+    font-size: 23px;
+    margin-bottom: 16px;
+  }
+  .followCol {
+    width: 100%;
+    max-width: 400px;
+    margin-bottom: 60px;
+  }
+  .postCol {
+    width: 100%;
+  }
+  .avatar {
+    width: 50px;
+    height: 50px;
+  }
+  .post {
+    width: calc(100% - 65px);
+  }
+  .createPost {
+    min-height: 140px !important;
+  }
+  .postsRows {
+    padding: 40px 0 40px 0;
+  }
+  .postRow {
+    padding: 18px;
+  }
+  .postEvents {
+    margin: 7px -18px 0;
+    padding: 6px 18px 2px;
+    gap: 5px;
+  }
+  .eventIcon {
+    width: 14px;
+  }
+  .postEvents button {
+    font-size: 13px;
+  }
+  .rcInput {
+    min-height: 40px !important;
+  }
+  .fetchComments {
+    margin-left: 0;
+  }
+  .crImg {
+    width: 35px;
+    height: 35px;
+    margin-right: 10px;
+  }
+  .crText {
+    width: calc(100% - 45px);
+  }
+}
+
+/* Small devices (landscape phones, 576px and up) */
+@media (min-width: 576px) and (max-width: 767.98px) {
+}
+
+/* Medium devices (tablets, 768px and up) */
+@media (min-width: 768px) and (max-width: 991.98px) {
+  .followCol {
+    width: 280px;
+  }
+  .postCol {
+    width: calc(100% - 300px);
+  }
+  .avatar {
+    width: 50px;
+    height: 50px;
+    margin-right: 10px;
+  }
+  .post {
+    width: calc(100% - 60px);
+  }
+  .postsRows {
+    padding: 40px 0 40px 0;
+  }
+  .postEvents button {
+    font-size: 13px;
+  }
+  .eventIcon {
+    width: 16px;
+  }
+  .rcInput {
+    height: 40px !important;
+  }
+  .fetchComments {
+    margin-left: 0;
+  }
+}
+
+/* Large devices (desktops, 992px and up) */
+@media (min-width: 992px) and (max-width: 1199.98px) {
+  .postsRows {
+    padding: 60px 0 40px 0;
+  }
+  .postCol {
+    width: calc(100% - 425px);
+  }
+}
+@media (min-width: 768px) and (max-width: 1399.98px) {
+}
+
+/* Extra large devices (large desktops, 1200px and up) */
+@media (min-width: 1200px) and (max-width: 1399.98px) {
+}
+
+@media (min-width: 1400px) {
 }
