@@ -312,7 +312,7 @@ const Newsfeed = (props) => {
                 <div className={classes.postsRows}>
                   {posts.map((row, index) => {
                     return (
-                      <div className={classes.postRow}>
+                      <div key={row.id} className={classes.postRow}>
                         <PostCard
                           id={row.id}
                           index={index}
@@ -329,8 +329,8 @@ const Newsfeed = (props) => {
                           deletePost={deletePost}
                           editPost={editPost}
                           filterPostsUnfollow={filterPostsUnfollow}
-                          likesCount={row.like_counter ? row.like_counter.count : 0}
-                          likes={row.likes ? row.likes : null}
+                          // likesCount={row.like_counter ? row.like_counter.count : 0}
+                          // likes={row.likes ? row.likes : null}
                           // likes={row.likes && row.likes.map((like) => (parseInt(like.user_id) == rows.id ? true : false))}
                         />
                         <div className={classes.comments}>
@@ -349,9 +349,9 @@ const Newsfeed = (props) => {
                           {/* Fetch Comments */}
                           {comments
                             ? comments.map((comment, comment_Index) => {
-                                return row.id === comment.post_id ? (
+                                return row.id === parseInt(comment.post_id) ? (
                                   <Comment
-                                    // key={comment.post_id}
+                                    key={comment.id}
                                     id={comment.id}
                                     index={comment_Index}
                                     userId={comment.user.id}

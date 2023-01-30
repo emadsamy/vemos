@@ -252,7 +252,7 @@ const PostCard = ({
 
   async function deleteLike() {
     setIsLiked(false);
-    setLikesCounter(likesCount == 0 ? 0 : likesCount - 1);
+    setLikesCounter(likesCount - 1);
     const token = localStorage.getItem("token");
     const options = {
       url: window.baseURL + "/delete_like",
@@ -464,14 +464,14 @@ const PostCard = ({
           )}
         </div>
 
-        <div className={classes.eventsCounter}>
+        {/* <div className={classes.eventsCounter}>
           <div className={classes.likeCounter}>
             <img className={`img-fluid ${classes.likeCountIcon}`} src={LikeImg} alt="like" /> {id ? likesCounter : null}
           </div>
-        </div>
+        </div> */}
 
         <div className={classes.postEvents}>
-          {isLiked ? (
+          {/* {isLiked ? (
             <button onClick={deleteLike} className={classes.liked}>
               <ThumbsUp size={21} className={classes.eventIcon} /> Liked
             </button>
@@ -479,7 +479,10 @@ const PostCard = ({
             <button onClick={addLike}>
               <ThumbsUp size={21} className={classes.eventIcon} /> Like
             </button>
-          )}
+          )} */}
+          <button onClick={addLike}>
+            <ThumbsUp size={21} className={classes.eventIcon} /> Like
+          </button>
           <button>
             <MessageCircle size={21} className={classes.eventIcon} /> Comment
           </button>

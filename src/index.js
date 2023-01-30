@@ -11,8 +11,8 @@ import reportWebVitals from "./reportWebVitals";
 import { Toaster } from "react-hot-toast";
 // import "@styles/react/libs/react-hot-toasts/react-hot-toasts.scss"
 
-// window.baseURL = "http://127.0.0.1:8000/api/v1";
-window.baseURL = process.env.REACT_APP_BASE_API_URL;
+// window.baseURL = process.env.REACT_APP_BASE_API_URL;
+window.baseURL = "https://vemos.directorstudio.me/public/api/v1";
 
 const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__;
 
