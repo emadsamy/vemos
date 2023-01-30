@@ -2,6 +2,7 @@
   "name": "react-socket",
   "version": "0.1.0",
   "private": true,
+  "homepage": "https://emadsamy.github.io/vemos",
   "dependencies": {
     "@hookform/error-message": "^2.0.1",
     "@hookform/resolvers": "^2.9.10",
@@ -44,7 +45,9 @@
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
-    "eject": "react-scripts eject"
+    "eject": "react-scripts eject",
+    "predeploy": "npm run build",
+    "deploy": "gh-pages -d build"
   },
   "eslintConfig": {
     "extends": [
@@ -67,6 +70,7 @@
   "devDependencies": {
     "@craco/craco": "^7.0.0",
     "@types/react-lazy-load-image-component": "^1.5.2",
-    "dotenv": "^16.0.3"
+    "dotenv": "^16.0.3",
+    "gh-pages": "^5.0.0"
   }
 }
