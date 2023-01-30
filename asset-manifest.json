@@ -1,7 +1,7 @@
 {
   "files": {
-    "main.css": "/vemos/static/css/main.a431c02f.css",
-    "main.js": "/vemos/static/js/main.8ffdfa27.js",
+    "main.css": "/vemos/static/css/main.c58f6fbd.css",
+    "main.js": "/vemos/static/js/main.243595a0.js",
     "static/js/787.6acdafdb.chunk.js": "/vemos/static/js/787.6acdafdb.chunk.js",
     "static/media/success-transfer-money.jpg": "/vemos/static/media/success-transfer-money.f69c83dae2425ee97c47.jpg",
     "static/media/error404.png": "/vemos/static/media/error404.097cecd2afc83da9e632.png",
@@ -9,12 +9,12 @@
     "static/media/like.svg": "/vemos/static/media/like.75f9bea19bc19b9c135680982ab818e9.svg",
     "index.html": "/vemos/index.html",
     "static/media/more.svg": "/vemos/static/media/more.570aff7ccf09016c57bdc7fc23cbc642.svg",
-    "main.a431c02f.css.map": "/vemos/static/css/main.a431c02f.css.map",
-    "main.8ffdfa27.js.map": "/vemos/static/js/main.8ffdfa27.js.map",
+    "main.c58f6fbd.css.map": "/vemos/static/css/main.c58f6fbd.css.map",
+    "main.243595a0.js.map": "/vemos/static/js/main.243595a0.js.map",
     "787.6acdafdb.chunk.js.map": "/vemos/static/js/787.6acdafdb.chunk.js.map"
   },
   "entrypoints": [
-    "static/css/main.a431c02f.css",
-    "static/js/main.8ffdfa27.js"
+    "static/css/main.c58f6fbd.css",
+    "static/js/main.243595a0.js"
   ]
 }
