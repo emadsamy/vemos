@@ -73,7 +73,6 @@ const Information = ({ updateData }) => {
         }
       })
       .catch((err) => {
-        console.log(err);
         setLoading(false);
       });
   };

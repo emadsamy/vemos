@@ -44,7 +44,6 @@ const Comment = ({ id, index, userId, comment, name, email, avatar, createdAt, d
     axios(options)
       .then((response) => {
         setLoadingDelete(false);
-        console.log(response.data.data);
         deleteComment(index, response.data.success);
         if (response.data.success) {
           toast.success(response.data.message);
@@ -52,7 +51,6 @@ const Comment = ({ id, index, userId, comment, name, email, avatar, createdAt, d
       })
       .catch((error) => {
         setLoadingDelete(false);
-        console.log(error);
       });
   }
 
@@ -75,7 +73,6 @@ const Comment = ({ id, index, userId, comment, name, email, avatar, createdAt, d
     axios(options)
       .then((response) => {
         setLoadingEdit(false);
-        console.log(response.data);
         if (response.data.success) {
           toast.success(response.data.message);
           setToggleInputEdit(false);

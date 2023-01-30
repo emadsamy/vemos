@@ -45,13 +45,11 @@ const Persons = (props) => {
     await axios(options)
       .then((response) => {
         setLoading(false);
-        console.log(response);
         setPersons(response.data.users);
         seCount(response.data.count);
       })
       .catch((err) => {
         setLoading(false);
-        // dispatch(personsAction());
       });
   }
 

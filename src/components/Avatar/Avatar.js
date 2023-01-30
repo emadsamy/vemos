@@ -15,8 +15,13 @@ const Avatar = ({ className, avatarUpdated }) => {
   }, [dispatch]);
   const [userData, setUserData] = useState("");
   const rows = useSelector((state) => state.me);
-  //   return <img src={rows.avatar ? rows.avatar : AvatarImg} className={`img-fluid ${className}`} />;
-  return <img src={avatarUpdated ? avatarUpdated : rows.avatar ? rows.avatar : AvatarImg} className={`img-fluid ${className}`} />;
+  return (
+    <img
+      src={avatarUpdated ? avatarUpdated : rows.avatar ? rows.avatar : AvatarImg}
+      className={`img-fluid ${className}`}
+      alt="Avatar"
+    />
+  );
 };
 
 export { Avatar };

@@ -76,8 +76,6 @@ const PostCard = ({
     axios(options)
       .then((response) => {
         setLoadingDelete(false);
-        console.log(response);
-        console.log(index);
         if (response.data.success) {
           toast.success(response.data.message);
           deletePost(index, response.data.success);
@@ -107,7 +105,6 @@ const PostCard = ({
     axios(options)
       .then((response) => {
         setLoadingEdit(false);
-        console.log(response.data);
         if (response.data.success) {
           toast.success(response.data.message);
           setToggleInputEdit(false);
@@ -205,10 +202,8 @@ const PostCard = ({
         if (check.length > 0) {
           result = true;
         }
-        // console.log(result);
       } else {
         result = likes.user_id == rows.id;
-        // console.log(result);
       }
       setIsLiked(result);
     }
@@ -239,15 +234,8 @@ const PostCard = ({
       },
     };
     await axios(options)
-      .then((response) => {
-        console.log(response.data);
-        // if (response.data.success) {
-        //   setLikesCounter(response.data.count);
-        // }
-      })
-      .catch((error) => {
-        console.log(error);
-      });
+      .then((response) => {})
+      .catch((error) => {});
   }
 
   async function deleteLike() {
@@ -268,14 +256,11 @@ const PostCard = ({
     };
     await axios(options)
       .then((response) => {
-        console.log(response.data);
         // if (response.data.success) {
         //   setLikesCounter(response.data.count);
         // }
       })
-      .catch((error) => {
-        console.log(error);
-      });
+      .catch((error) => {});
   }
 
   const checkPerson = (sender_id, receiver_id) => {
@@ -368,31 +353,6 @@ const PostCard = ({
                   )}
                 </div>
               </div>
-              {/* {rows.id !== userId ? (
-                followStatus ? (
-                  <button onClick={() => unfollowPerson(rows.id, userId, index)} className={`btn ${classes.followingBtn}`}>
-                    {followLoading ? (
-                      <>
-                        <RotatingLines strokeColor="#fff" strokeWidth="5" animationDuration="0.75" width="18" visible={true} />
-                      </>
-                    ) : (
-                      "Following"
-                    )}
-                  </button>
-                ) : (
-                  <button onClick={() => followPerson(rows.id, userId, index)} className={`btn ${classes.followBtn}`}>
-                    {followLoading ? (
-                      <>
-                        <RotatingLines strokeColor="#0d6efd" strokeWidth="5" animationDuration="0.75" width="18" visible={true} />
-                      </>
-                    ) : (
-                      "Follow"
-                    )}
-                  </button>
-                )
-              ) : (
-                ""
-              )} */}
             </div>
             <div className={classes.postDate}>{moment(createdAt).calendar()}</div>
           </div>

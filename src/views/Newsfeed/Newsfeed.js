@@ -76,7 +76,6 @@ const Newsfeed = (props) => {
         audioRef.current.load();
       }
     }
-    console.log(media.type);
   };
 
   const addPostHandler = () => {
@@ -115,7 +114,6 @@ const Newsfeed = (props) => {
           }
         })
         .catch((error) => {
-          console.log(error);
           setLoading(false);
           inputFileRef.current.value = null;
         });
@@ -127,19 +125,6 @@ const Newsfeed = (props) => {
 
   useState(() => {
     getPosts();
-    // window.addEventListener("blur", () => {
-    //   document.title = "Come Back Bro :(";
-    // });
-    // window.addEventListener("focus", () => {
-    //   document.title = "Welcome :)";
-    // });
-
-    // document.body.addEventListener("mousemove", (e) => {
-    //   const tracker = document.getElementById("tracker");
-    //   tracker.style.left = `${e.clientX - 35}px`;
-    //   tracker.style.top = `${e.clientY - 35}px`;
-    // });
-    // console.log(process.env.REACT_APP_TITLE);
   }, []);
 
   function getPosts() {
@@ -156,13 +141,11 @@ const Newsfeed = (props) => {
     axios(options)
       .then((response) => {
         setPostsLoading(false);
-        console.log(response.data);
         setPosts(response.data.posts);
         setComments(response.data.comments);
       })
       .catch((error) => {
         setPostsLoading(false);
-        console.log(error);
       });
   }
 
@@ -224,19 +207,11 @@ const Newsfeed = (props) => {
     }
   }
 
-  // function clearConsole() {
-  //   if (window.console || window.console.firebug) {
-  //     console.clear();
-  //   }
-  // }
-  // clearConsole();
-
   return (
     <>
       <Helmet>
         <title>Newsfeed</title>
       </Helmet>
-      {/* <div id={"tracker"} className={classes.tracker}></div> */}
       {redirect}
       <NavbarComponent />
       <div className={classes.newsfeed}>
@@ -259,11 +234,6 @@ const Newsfeed = (props) => {
                         onChange={(e) => setDesc(e.target.value)}
                         placeholder={`What's on your mind ?`}
                       />
-                      {/* <textarea
-                        value={desc}
-                        onChange={(e) => setDesc(e.target.value)}
-                        placeholder={`What's on your mind ?`}
-                      ></textarea> */}
                     </div>
                     <div className={classes.media}>
                       {allMedia.image ? <img src={allMedia.image} className={`img-fluid`} /> : ""}

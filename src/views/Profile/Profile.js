@@ -99,7 +99,6 @@ const Profile = ({}) => {
           setTransferLoading(false);
         })
         .catch((err) => {
-          console.log(err);
           setTransferLoading(false);
         });
     } else {
@@ -202,23 +201,6 @@ const Profile = ({}) => {
                 <TabPanel>
                   <h2 className={`mb-5`}>💸 Send Money</h2>
                   <Form onSubmit={handleSubmit(onSubmit)}>
-                    {/* <div className={classes.formGroup}>
-                      <div className={classes.fgFlexable}>
-                        <div className={classes.formTitle}>Price</div>
-                        <div>
-                          <Cleave
-                            placeholder="Enter Price"
-                            options={{ numeral: true, numericOnly: true, blocks: [3] }}
-                            onChange={(e) => priceHandler(e)}
-                            className={`${classes.formInput} ${amountBool ? classes.formInvalid : ""}`}
-                            required
-                          />{" "}
-                          $
-                        </div>
-                      </div>
-                      <p>{}</p>
-                    </div> */}
-
                     <Form.Group className={`${classes.formGroup} mb-3`} controlId="formEmail">
                       <div>
                         <Form.Label className={classes.formTitle}>Email</Form.Label>

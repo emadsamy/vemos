@@ -34,7 +34,6 @@ const AddComment = ({ userId, postId, postIndex, addCommentsHandle }) => {
     axios(options)
       .then((response) => {
         setLoading(false);
-        console.log(response.data.data);
         addCommentsHandle(response.data.data, response.data.success);
         if (response.data.success) {
           toast.success(response.data.message);
@@ -43,7 +42,6 @@ const AddComment = ({ userId, postId, postIndex, addCommentsHandle }) => {
       })
       .catch((error) => {
         setLoading(false);
-        console.log(error);
       });
   }
 

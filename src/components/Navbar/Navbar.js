@@ -28,19 +28,14 @@ const NavbarComponent = ({ avatarUpdated, fullName }) => {
         <Container>
           <NavLink to="/">
             <Navbar.Brand>
-              <img className={`img-fluid ${classes.logo}`} src={Logo} />
+              <img className={`img-fluid ${classes.logo}`} src={Logo} alt="Logo" />
             </Navbar.Brand>
           </NavLink>
-          {/* <Navbar.Toggle aria-controls="responsive-navbar-nav" /> */}
           <Navbar.Collapse id="responsive-navbar-nav">
             <Nav className="me-auto"></Nav>
             <Dropdown>
               {GetJwt() ? (
                 <div className="d-flex align-items-center">
-                  {/* <div className={classes.balance}>
-                    Balance <span className={classes.balanceValue}>{rows.balance}$</span>
-                  </div> */}
-                  {/* <NavLink to="/newsfeed" className={classes.navLink}>Profile</NavLink> */}
                   <Dropdown.Toggle className={classes.navDropdown} variant="Secondary" id="dropdown-basic">
                     <Avatar avatarUpdated={avatarUpdated} className={classes.avatar} />
                     <span className={`${classes.userName} text-capitalize`}>{fullName ? fullName : rows.name}</span>
